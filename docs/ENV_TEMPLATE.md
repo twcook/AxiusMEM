@@ -1,15 +1,12 @@
 # =====================
-# SDCKG-Agent .env Template
+# AxiusMEM .env Template
 # =====================
 
 # --- GraphDB / Knowledge Graph ---
-AGENT_MEMORY_URL=
-GRAPHDB_USER=
+AGENT_MEMORY_URL= 
+GRAPHDB_USER= 
 GRAPHDB_PASSWORD=
 GRAPHDB_USE_HTTPS=true
-
-# --- SDC4 Ontology ---
-SDC4_ONTOLOGY_URL=
 
 # --- LLM & Embeddings Provider ---
 LLM_PROVIDER=openai  # or 'google', etc.

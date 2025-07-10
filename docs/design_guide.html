@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semantic Data Charter - Interactive Palette</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Semantic Data Charter Palette (Deep Blue, Teal, Gold) -->
+    <!-- Application Structure Plan: A multi-section SPA design. 1. Hero with brand introduction. 2. Interactive palette swatches grid. 3. Live UI component demo (including a chart) to show colors in a realistic context. 4. Interactive accessibility checker to demonstrate contrast rules. 5. Code snippets for easy developer implementation. This structure was chosen to guide the user from basic color information to practical application and implementation, making the brand guidelines tangible and actionable. -->
+    <!-- Visualization & Content Choices: Report Info: Color Palette -> Goal: Inform/Organize -> Viz: Interactive HTML swatches -> Interaction: Hover for details -> Justification: Direct, clear presentation of core data. Report Info: UI Examples -> Goal: Demonstrate/Compare -> Viz: Mock HTML/CSS components & Chart.js Donut Chart -> Interaction: Hover tooltips on chart -> Justification: Shows practical application of the palette. Report Info: Accessibility Guideline -> Goal: Educate/Inform -> Viz: HTML table with JS-calculated contrast ratios -> Interaction: Dynamic calculation and pass/fail display -> Justification: Makes an abstract rule concrete and interactive. Report Info: Developer Implementation -> Goal: Enable -> Viz: HTML code blocks -> Interaction: Copy-to-clipboard button -> Justification: Provides direct utility for developers. Library: Chart.js for the demo chart. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fb;
+            color: #333333;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+        .color-swatch {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .color-swatch:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .code-block {
+            background-color: #0a2342;
+            color: #f7f9fb;
+        }
+    </style>
+</head>
+<body class="smooth-scroll">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-[#0a2342] flex items-center justify-center rounded-lg">
+                    <span class="font-bold text-white text-xl">S</span>
+                </div>
+                <h1 class="text-xl font-bold text-[#0a2342]">Semantic Data Charter</h1>
+            </div>
+            <div class="hidden md:flex items-center space-x-6 text-sm font-medium text-[#0a2342]">
+                <a href="#palette" class="hover:text-[#2ca58d] transition">Palette</a>
+                <a href="#demo" class="hover:text-[#2ca58d] transition">UI Demo</a>
+                <a href="#accessibility" class="hover:text-[#2ca58d] transition">Accessibility</a>
+                <a href="#implementation" class="hover:text-[#2ca58d] transition">Implementation</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+        
+        <section id="hero" class="text-center mb-20">
+            <h2 class="text-4xl md:text-5xl font-bold text-[#0a2342] mb-4">A Visual Foundation</h2>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">This interactive guide presents the official color palette for the <span class="font-semibold text-[#0a2342]">Semantic Data Charter</span> website and the <span class="font-semibold text-[#2ca58d]">SDC Studio</span>. Explore how these colors create a cohesive, professional, and accessible user experience.</p>
+        </section>
+
+        <section id="palette" class="mb-20">
+            <h3 class="text-3xl font-bold text-center text-[#0a2342] mb-10">Core Palette</h3>
+            <div id="palette-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
+            </div>
+        </section>
+
+        <section id="demo" class="mb-20">
+            <h3 class="text-3xl font-bold text-center text-[#0a2342] mb-4">Live UI Demo</h3>
+            <p class="text-center text-gray-600 mb-10 max-w-3xl mx-auto">See the palette in action. This section demonstrates how the colors are applied to common SDC Studio components to create a clear visual hierarchy.</p>
+            
+            <div class="bg-white p-8 rounded-2xl shadow-lg border border-gray-200">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    
+                    <div class="lg:col-span-1">
+                        <h4 class="font-bold text-lg mb-4 text-[#0a2342]">Navigation & Actions</h4>
+                        <div class="space-y-4">
+                            <button class="w-full text-white font-bold py-2 px-4 rounded-lg transition" style="background-color: #0a2342;">Primary Action</button>
+                            <button class="w-full text-white font-bold py-2 px-4 rounded-lg transition" style="background-color: #2ca58d;">Secondary Action</button>
+                            <button class="w-full font-bold py-2 px-4 rounded-lg transition" style="background-color: #e1e6ea; color: #333333;">Tertiary Action</button>
+                            <button class="w-full text-white font-bold py-2 px-4 rounded-lg transition" style="background-color: #f0a500;">Accent/CTA</button>
+                        </div>
+                         <hr class="my-6 border-[#e1e6ea]">
+                         <h4 class="font-bold text-lg mb-4 text-[#0a2342]">Alerts</h4>
+                         <div class="space-y-3">
+                            <div class="p-4 rounded-lg" style="background-color: #e1e6ea;">
+                                <p class="font-medium" style="color: #333333;"><strong>Info:</strong> Your data processing has started.</p>
+                            </div>
+                            <div class="p-4 rounded-lg" style="background-color: #d1f3ec;">
+                                 <p class="font-medium" style="color: #1d6c5c;"><strong>Success:</strong> Your report was generated successfully!</p>
+                            </div>
+                             <div class="p-4 rounded-lg" style="background-color: #fdf0d5;">
+                                 <p class="font-medium" style="color: #b47800;"><strong>Warning:</strong> API key is expiring in 7 days.</p>
+                            </div>
+                         </div>
+                    </div>
+
+                    <div class="lg:col-span-2 bg-[#f7f9fb] p-6 rounded-xl border border-[#e1e6ea]">
+                       <h4 class="font-bold text-xl mb-2 text-[#0a2342]">SDC Studio Dashboard</h4>
+                       <p class="text-[#a9b4c2] text-sm mb-6">Example showing data visualization and layout.</p>
+                       
+                       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                           <div>
+                               <label for="projectName" class="block text-sm font-medium text-[#333333] mb-1">Project Name</label>
+                               <input type="text" id="projectName" class="w-full p-2 border rounded-md" style="border-color: #e1e6ea; background-color: white;" value="Q3 Financial Analysis">
+                           </div>
+                           <div>
+                               <label for="projectStatus" class="block text-sm font-medium text-[#333333] mb-1">Status</label>
+                               <select id="projectStatus" class="w-full p-2 border rounded-md" style="border-color: #e1e6ea; background-color: white;">
+                                   <option>In Progress</option>
+                                   <option>Completed</option>
+                                   <option>On Hold</option>
+                               </select>
+                           </div>
+                           <div class="md:col-span-2">
+                               <h5 class="font-semibold text-md mb-2 text-[#0a2342]">Dataset Distribution</h5>
+                               <div class="chart-container">
+                                   <canvas id="demoChart"></canvas>
+                               </div>
+                           </div>
+                       </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="accessibility" class="mb-20">
+            <h3 class="text-3xl font-bold text-center text-[#0a2342] mb-4">Accessibility Checker</h3>
+            <p class="text-center text-gray-600 mb-10 max-w-3xl mx-auto">Good contrast is key to readability. This tool checks text and background combinations from the palette against WCAG AA standards.</p>
+            <div class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gray-200">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="border-b border-[#e1e6ea]">
+                                <th class="p-4 font-semibold">Text Color</th>
+                                <th class="p-4 font-semibold">Background Color</th>
+                                <th class="p-4 font-semibold text-center">Ratio</th>
+                                <th class="p-4 font-semibold text-center">WCAG AA</th>
+                                <th class="p-4 font-semibold">Example</th>
+                            </tr>
+                        </thead>
+                        <tbody id="accessibility-table-body">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <section id="implementation">
+            <h3 class="text-3xl font-bold text-center text-[#0a2342] mb-4">Implementation Snippets</h3>
+            <p class="text-center text-gray-600 mb-10 max-w-3xl mx-auto">Get started quickly. Here are code snippets to integrate this color palette into your projects.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h4 class="font-semibold text-lg mb-2 text-[#0a2342]">CSS Variables</h4>
+                    <p class="text-sm text-gray-600 mb-4">Add these to your global CSS file for easy access to the palette throughout your application.</p>
+                    <div class="relative">
+                        <pre class="code-block p-4 rounded-lg overflow-x-auto"><code id="css-vars-code">:root {
+    --color-primary: #0a2342;
+    --color-secondary: #2ca58d;
+    --color-accent: #f0a500;
+    --color-accent-light: #8db9d9;
+    --color-bg: #f7f9fb;
+    --color-border: #e1e6ea;
+    --color-text-primary: #333333;
+    --color-text-secondary: #a9b4c2;
+}</code></pre>
+                        <button onclick="copyToClipboard('css-vars-code')" class="absolute top-2 right-2 bg-white/20 text-white text-xs px-2 py-1 rounded hover:bg-white/30 transition">Copy</button>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-lg mb-2 text-[#0a2342]">Tailwind CSS Config</h4>
+                    <p class="text-sm text-gray-600 mb-4">Extend your `tailwind.config.js` file to use these colors with Tailwind's utility classes.</p>
+                     <div class="relative">
+                        <pre class="code-block p-4 rounded-lg overflow-x-auto"><code id="tailwind-config-code">module.exports = {
+    theme: {
+        extend: {
+            colors: {
+                'sdc-blue': '#0a2342',
+                'sdc-teal': '#2ca58d',
+                'sdc-gold': '#f0a500',
+                'sdc-light-blue': '#8db9d9',
+                'sdc-off-white': '#f7f9fb',
+                'sdc-light-gray': '#e1e6ea',
+                'sdc-med-gray': '#a9b4c2',
+                'sdc-dark-gray': '#333333',
+            },
+        },
+    },
+    plugins: [],
+}</code></pre>
+                        <button onclick="copyToClipboard('tailwind-config-code')" class="absolute top-2 right-2 bg-white/20 text-white text-xs px-2 py-1 rounded hover:bg-white/30 transition">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white mt-20 border-t border-[#e1e6ea]">
+        <div class="container mx-auto px-6 py-8 text-center text-[#a9b4c2]">
+            <p>&copy; 2025 Semantic Data Charter. All Rights Reserved.</p>
+        </div>
+    </footer>
+    
+    <div id="copy-notification" class="fixed bottom-5 right-5 bg-[#0a2342] text-white px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-300">
+        Copied to clipboard!
+    </div>
+
+
+    <script>
+        const paletteData = [
+            { name: 'Deep Blue', hex: '#0a2342', role: 'Primary', usage: 'Primary buttons, main headers, key navigation elements, primary icons.' },
+            { name: 'Teal', hex: '#2ca58d', role: 'Secondary', usage: 'Secondary actions, highlights, informational banners, illustrative elements.' },
+            { name: 'Accent Gold', hex: '#f0a500', role: 'Accent', usage: 'Call-to-action (CTA) buttons, notifications, alerts, success messages.' },
+            { name: 'Light Blue', hex: '#8db9d9', role: 'Subtle Accent', usage: 'Secondary text, disabled button states, subtle background highlights, tooltips.' },
+            { name: 'Dark Gray', hex: '#333333', role: 'Primary Text', usage: 'Main body text for optimal readability.' },
+            { name: 'Medium Gray', hex: '#a9b4c2', role: 'Secondary Text', usage: 'Placeholder text, less important body text.' },
+            { name: 'Light Gray', hex: '#e1e6ea', role: 'Borders', usage: 'Borders, dividers, input field backgrounds.' },
+            { name: 'Off-White', hex: '#f7f9fb', role: 'Background', usage: 'Main background color for pages and application containers.' },
+        ];
+
+        function createPaletteGrid() {
+            const grid = document.getElementById('palette-grid');
+            paletteData.forEach(color => {
+                const isDark = getLuminance(color.hex) < 0.5;
+                const textColor = isDark ? 'text-white' : 'text-black';
+
+                const card = `
+                    <div class="rounded-2xl shadow-lg overflow-hidden bg-white border border-gray-200">
+                        <div class="color-swatch w-full h-32" style="background-color: ${color.hex};"></div>
+                        <div class="p-5">
+                            <h4 class="font-bold text-lg text-[#0a2342]">${color.name}</h4>
+                            <p class="text-sm text-[#a9b4c2] font-mono mb-2">${color.hex}</p>
+                            <p class="text-sm text-gray-600"><strong>Usage:</strong> ${color.usage}</p>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += card;
+            });
+        }
+
+        function createDemoChart() {
+            const ctx = document.getElementById('demoChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Financial', 'Operational', 'Marketing', 'HR'],
+                    datasets: [{
+                        label: 'Dataset Records',
+                        data: [1250, 870, 650, 320],
+                        backgroundColor: [
+                            '#0a2342',
+                            '#2ca58d',
+                            '#8db9d9',
+                            '#a9b4c2'
+                        ],
+                        borderColor: '#f7f9fb',
+                        borderWidth: 4,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#333333',
+                                font: {
+                                    family: "'Inter', sans-serif"
+                                }
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+        }
+
+        function getLuminance(hex) {
+            const rgb = parseInt(hex.substring(1), 16);
+            const r = (rgb >> 16) & 0xff;
+            const g = (rgb >> 8) & 0xff;
+            const b = (rgb >> 0) & 0xff;
+            
+            const a = [r, g, b].map(v => {
+                v /= 255;
+                return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+            });
+            return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+        }
+
+        function getContrastRatio(hex1, hex2) {
+            const lum1 = getLuminance(hex1);
+            const lum2 = getLuminance(hex2);
+            const brightest = Math.max(lum1, lum2);
+            const darkest = Math.min(lum1, lum2);
+            return (brightest + 0.05) / (darkest + 0.05);
+        }
+
+        function createAccessibilityTable() {
+            const tableBody = document.getElementById('accessibility-table-body');
+            const combinations = [
+                { text: '#333333', bg: '#f7f9fb' },
+                { text: '#333333', bg: '#e1e6ea' },
+                { text: '#FFFFFF', bg: '#0a2342' },
+                { text: '#FFFFFF', bg: '#2ca58d' },
+                { text: '#0a2342', bg: '#8db9d9' },
+                { text: '#FFFFFF', bg: '#f0a500' },
+                { text: '#333333', bg: '#f0a500' },
+            ];
+
+            combinations.forEach(combo => {
+                const ratio = getContrastRatio(combo.text, combo.bg);
+                const passes = ratio >= 4.5;
+                const statusClass = passes ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800';
+                const statusText = passes ? 'Pass' : 'Fail';
+                
+                const row = `
+                    <tr class="border-b border-[#e1e6ea]">
+                        <td class="p-4"><div class="flex items-center"><div class="w-5 h-5 rounded-full mr-2 border border-gray-300" style="background-color: ${combo.text};"></div><span>${combo.text}</span></div></td>
+                        <td class="p-4"><div class="flex items-center"><div class="w-5 h-5 rounded-full mr-2 border border-gray-300" style="background-color: ${combo.bg};"></div><span>${combo.bg}</span></div></td>
+                        <td class="p-4 text-center font-mono">${ratio.toFixed(2)}</td>
+                        <td class="p-4 text-center"><span class="px-3 py-1 text-xs font-semibold rounded-full ${statusClass}">${statusText}</span></td>
+                        <td class="p-4">
+                            <div class="p-2 rounded" style="background-color: ${combo.bg}; color: ${combo.text};">Readable Text</div>
+                        </td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+        }
+        
+        function copyToClipboard(elementId) {
+            const codeEl = document.getElementById(elementId);
+            const text = codeEl.innerText;
+            
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            const notification = document.getElementById('copy-notification');
+            notification.classList.remove('opacity-0');
+            setTimeout(() => {
+                notification.classList.add('opacity-0');
+            }, 2000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            createPaletteGrid();
+            createDemoChart();
+            createAccessibilityTable();
+        });
+    </script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 ## **Product Requirements Document: AxiusMEM \- A W3C Compliant Temporal Knowledge Graph Library for AI Agents**
 
-Version: 1.0  
+Version: 1.0.0a
 Date: July 10, 2025  
 Author: Timothy W. Cook  
 ---
@@ -8,6 +8,8 @@ Author: Timothy W. Cook
 ### **1\. Introduction**
 
 This document outlines the requirements for **AxiusMEM**, a Python library designed to facilitate the creation, management, and querying of dynamic, temporal knowledge graphs for AI agents. Unlike traditional static knowledge bases, AxiusMEM will enable AI agents to operate within continuously evolving environments by providing robust mechanisms for incremental data integration, historical context preservation, and advanced querying capabilities. A key differentiator of AxiusMEM is its strict adherence to **W3C semantic web standards (RDF, SPARQL, OWL)** and initial optimization for **Ontotext GraphDB** as the primary triplestore.  
+
+This will be a library available on PyPy. There will environment files for conda and for pip. The axm ontology is at: docs/axiusmem_ontology.ttl and should be loaded at startup time. docs/ENV_TEMPLATE.md provides a template for environment variables located in a dotenv file. 
 ---
 
 ### **2\. Goals & Objectives**

@@ -1,0 +1,190 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix schema: <http://schema.org/> . # Reusing schema.org for common concepts
+@prefix axm: <https://axius.info/axiusmem/> .
+
+<https://axius.info/axiusmem/> rdf:type owl:Ontology ;
+    owl:versionIRI <https://axius.info/axiusmem/1.0> ;
+    rdfs:comment "AxiusMEM Core OWL Ontology for Dynamic, Temporal Knowledge Graphs for AI Agents." ;
+    owl:imports <http://www.w3.org/ns/prov#> ,
+                <http://www.w3.org/2006/time#> . # Import PROV-O and OWL-Time
+
+# -------------------------------------------------------------------
+# Classes
+# -------------------------------------------------------------------
+
+axm:Entity rdf:type owl:Class ;
+    rdfs:comment "The top-level class for any identifiable thing or concept in the AxiusMEM knowledge graph." .
+
+axm:Event rdf:type owl:Class ;
+    rdfs:subClassOf axm:Entity ;
+    rdfs:comment "Represents an occurrence or happening that takes place at a specific point in time or over a duration." .
+
+axm:Agent rdf:type owl:Class ;
+    rdfs:subClassOf axm:Entity ;
+    rdfs:comment "Represents an entity capable of acting, such as an AI agent, a human user, or a system." .
+
+axm:TimeInterval rdf:type owl:Class ;
+    rdfs:subClassOf time:Interval ; # Inherit from OWL-Time Interval
+    rdfs:comment "Represents a period of time with a definite start and end, used for temporal modeling." .
+
+axm:Statement rdf:type owl:Class ;
+    rdfs:subClassOf rdf:Statement ; # Reifies an RDF triple
+    rdfs:comment "Represents a reified RDF triple, allowing for the attachment of metadata like valid time, transaction time, and provenance." .
+
+axm:AgentMemory rdf:type owl:Class ;
+    rdfs:subClassOf axm:Entity ;
+    rdfs:comment "Represents a piece of memory or experience stored by an AI agent, often derived from interactions or observations." .
+
+axm:Goal rdf:type owl:Class ;
+    rdfs:subClassOf axm:Entity ;
+    rdfs:comment "Represents a desired state or objective for an AI agent." .
+
+axm:Plan rdf:type owl:Class ;
+    rdfs:subClassOf axm:Entity ;
+    rdfs:comment "Represents a sequence of actions or steps to achieve a goal." .
+
+axm:Action rdf:type owl:Class ;
+    rdfs:subClassOf axm:Event ;
+    rdfs:comment "Represents an operation or activity performed by an agent." .
+
+axm:Source rdf:type owl:Class ;
+    rdfs:subClassOf prov:Entity ; # Reusing PROV-O Entity for sources
+    rdfs:comment "Represents the origin or source of information, such as a document, sensor, or user input." .
+
+# -------------------------------------------------------------------
+# Object Properties
+# -------------------------------------------------------------------
+
+# Temporal Properties
+axm:hasValidTimeInterval rdf:type owl:ObjectProperty ;
+    rdfs:domain [ owl:unionOf (axm:Statement axm:Event) ; rdf:type owl:Class ] ; # Can apply to Statements or Events
+    rdfs:range axm:TimeInterval ;
+    rdfs:comment "Links a statement or event to the time interval during which it is considered valid in the real world (Valid Time)." .
+
+axm:hasTransactionTimeInterval rdf:type owl:ObjectProperty ;
+    rdfs:domain axm:Statement ;
+    rdfs:range axm:TimeInterval ;
+    rdfs:comment "Links a statement to the time interval during which it was known or recorded in the knowledge graph system (Transaction Time)." .
+
+axm:isIntervalOf rdf:type owl:ObjectProperty ;
+    owl:inverseOf axm:hasValidTimeInterval ;
+    rdfs:domain axm:TimeInterval ;
+    rdfs:range [ owl:unionOf (axm:Statement axm:Event) ; rdf:type owl:Class ] ;
+    rdfs:comment "The inverse of hasValidTimeInterval; links a time interval to the statement or event it is valid for." .
+
+# Provenance Properties (reusing PROV-O where appropriate)
+axm:wasGeneratedBy rdf:type owl:ObjectProperty ;
+    rdfs:subPropertyOf prov:wasGeneratedBy ; # Sub-property of PROV-O's wasGeneratedBy
+    rdfs:domain axm:Statement ;
+    rdfs:range [ owl:unionOf (axm:Agent axm:Source) ; rdf:type owl:Class ] ;
+    rdfs:comment "Links a statement to the agent or source that generated it." .
+
+axm:wasDerivedFrom rdf:type owl:ObjectProperty ;
+    rdfs:subPropertyOf prov:wasDerivedFrom ; # Sub-property of PROV-O's wasDerivedFrom
+    rdfs:domain axm:Statement ;
+    rdfs:range [ owl:unionOf (axm:Statement axm:Source) ; rdf:type owl:Class ] ;
+    rdfs:comment "Links a statement to the statement or source from which it was derived." .
+
+# Agent-specific Properties
+axm:hasMemory rdf:type owl:ObjectProperty ;
+    rdfs:domain axm:Agent ;
+    rdfs:range axm:AgentMemory ;
+    rdfs:comment "Links an AI agent to a piece of its stored memory." .
+
+axm:recallsContext rdf:type owl:ObjectProperty ;
+    rdfs:domain axm:Agent ;
+    rdfs:range axm:Entity ; # An agent recalls context about any entity
+    rdfs:comment "Links an AI agent to an entity or statement that it has recalled as context." .
+
+axm:hasGoal rdf:type owl:ObjectProperty ;
+    rdfs:domain axm:Agent ;
+    rdfs:range axm:Goal ;
+    rdfs:comment "Links an AI agent to one of its current goals." .
+
+axm:hasPlan rdf:type owl:ObjectProperty ;
+    rdfs:domain axm:Agent ;
+    rdfs:range axm:Plan ;
+    rdfs:comment "Links an AI agent to a plan it is executing or considering." .
+
+axm:executesAction rdf:type owl:ObjectProperty ;
+    rdfs:domain axm:Agent ;
+    rdfs:range axm:Action ;
+    rdfs:comment "Links an AI agent to an action it is performing." .
+
+axm:pertainsTo rdf:type owl:ObjectProperty ;
+    rdfs:domain axm:AgentMemory ;
+    rdfs:range axm:Entity ; # Agent memory pertains to an entity, event, or statement
+    rdfs:comment "Links a piece of agent memory to the entity, event, or statement it is about." .
+
+# General Relationships
+axm:hasPart rdf:type owl:ObjectProperty ;
+    rdfs:domain axm:Entity ;
+    rdfs:range axm:Entity ;
+    rdfs:comment "Indicates that an entity has another entity as a part." .
+
+axm:isPartOf rdf:type owl:ObjectProperty ;
+    owl:inverseOf axm:hasPart ;
+    rdfs:domain axm:Entity ;
+    rdfs:range axm:Entity ;
+    rdfs:comment "Indicates that an entity is part of another entity." .
+
+axm:relatesTo rdf:type owl:ObjectProperty ;
+    rdfs:domain axm:Entity ;
+    rdfs:range axm:Entity ;
+    rdfs:comment "A general-purpose property to indicate a relationship between two entities when a more specific property is not available." .
+
+# -------------------------------------------------------------------
+# Datatype Properties
+# -------------------------------------------------------------------
+
+axm:hasDescription rdf:type owl:DatatypeProperty ;
+    rdfs:domain axm:Entity ;
+    rdfs:range xsd:string ;
+    rdfs:comment "A general-purpose property for a textual description of an entity." .
+
+axm:hasName rdf:type owl:DatatypeProperty ;
+    rdfs:domain axm:Entity ;
+    rdfs:range xsd:string ;
+    rdfs:comment "A general-purpose property for the name of an entity." .
+
+axm:hasValue rdf:type owl:DatatypeProperty ;
+    rdfs:domain axm:Statement ;
+    rdfs:range rdfs:Literal ; # Can be any literal type
+    rdfs:comment "Used in reified statements (rdf:Statement) to hold the object literal value of the original triple." .
+
+axm:hasPrompt rdf:type owl:DatatypeProperty ;
+    rdfs:domain axm:AgentMemory ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Stores the prompt that led to a specific agent memory." .
+
+axm:hasResponse rdf:type owl:DatatypeProperty ;
+    rdfs:domain axm:AgentMemory ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Stores the response or outcome associated with a specific agent memory." .
+
+axm:hasConfidence rdf:type owl:DatatypeProperty ;
+    rdfs:domain axm:Statement ;
+    rdfs:range xsd:float ;
+    rdfs:comment "Indicates a confidence score associated with a statement (e.g., from an extraction process)." .
+
+axm:hasEmbedding rdf:type owl:DatatypeProperty ;
+    rdfs:domain axm:Entity ;
+    rdfs:range xsd:string ; # Store as string (e.g., JSON or base64 encoded vector)
+    rdfs:comment "Stores a vector embedding representation of an entity for semantic search or similarity calculations." .
+
+# -------------------------------------------------------------------
+# Reusing Schema.org properties (optional but useful for common concepts)
+# -------------------------------------------------------------------
+
+# Example: If you want to use schema:name instead of axm:hasName for some entities
+# axm:Person rdfs:subClassOf schema:Person .
+# axm:Organization rdfs:subClassOf schema:Organization .
+# axm:Place rdfs:subClassOf schema:Place .
+# ... and then use schema:name, schema:description directly.
+# For simplicity, I've kept axm:hasName and axm:hasDescription as general properties.
+
