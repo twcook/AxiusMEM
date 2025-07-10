@@ -2,7 +2,7 @@ import os
 import tempfile
 import rdflib
 import pytest
-from src.axiusmem.core import AxiusMEM
+from axiusmem.core import AxiusMEM
 
 TEST_ONTOLOGY_TTL = """
 @prefix ex: <http://example.org/> .
@@ -41,7 +41,7 @@ def test_add_triples_with_provenance(monkeypatch):
     def fake_attach_provenance(triple, **prov):
         called["triple"] = triple
         called["prov"] = prov
-    monkeypatch.setattr("src.axiusmem.utils.attach_provenance", fake_attach_provenance)
+    monkeypatch.setattr("axiusmem.utils.attach_provenance", fake_attach_provenance)
     mem.add_triples([(s, p, o)], provenance=provenance)
     g = mem.get_graph()
     assert (s, p, o) in g

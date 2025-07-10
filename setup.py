@@ -17,7 +17,7 @@ setup(
         "pandas>=1.3.0",
         "python-dotenv>=0.19.0",
         "langchain>=0.1.0",
-        "langraph>=0.0.30",
+        "langgraph>=0.0.30",
         "openai>=1.0.0",
         "google-generativeai>=0.3.0",
         "anthropic>=0.21.0",

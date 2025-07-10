@@ -4,9 +4,10 @@
 
 # --- GraphDB / Knowledge Graph ---
 AGENT_MEMORY_URL= 
-GRAPHDB_USER= 
-GRAPHDB_PASSWORD=
-GRAPHDB_USE_HTTPS=true
+GRAPHDB_REPO_ID = 
+GRAPHDB_USER = 
+GRAPHDB_PASSWORD =
+GRAPHDB_USE_HTTPS = true
 
 # --- LLM & Embeddings Provider ---
 LLM_PROVIDER=openai  # or 'google', etc.
