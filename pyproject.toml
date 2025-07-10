@@ -27,3 +27,8 @@ dependencies = [
     "mistralai>=0.1.0"
 ]
 license = { file = "LICENSE" } 
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: mark a test as an integration test"
+] 

@@ -11,75 +11,75 @@ This document outlines the phased implementation plan for AxiusMEM, a W3C-compli
 - [x] Add Sphinx documentation skeleton
 
 ### RDF Graph Core
-- [ ] Implement RDF triple store using `rdflib`
-- [ ] Load and manage OWL ontologies (Turtle, RDF/XML)
-- [ ] Utilities for extending/updating ontologies at runtime
-- [ ] Support for RDFS/OWL inferencing (local and GraphDB-backed)
-- [ ] Entity and relationship definition (programmatic API for classes/properties)
-- [ ] Data provenance support (PROV-O integration, source/timestamp/agent)
+- [x] Implement RDF triple store using `rdflib`
+- [x] Load and manage OWL ontologies (Turtle, RDF/XML)
+- [x] Utilities for extending/updating ontologies at runtime
+- [x] Support for RDFS/OWL inferencing (local and GraphDB-backed)
+- [x] Entity and relationship definition (programmatic API for classes/properties)
+- [x] Data provenance support (PROV-O integration, source/timestamp/agent)
 
 ---
 
 ## Phase 2: Temporal & Provenance Model
 
 ### Bi-Temporal Data Model
-- [ ] Design and implement valid time (VT) and transaction time (TT) support
-  - Use named graphs or reification for TT
-  - Use custom or standard properties for VT
-- [ ] Helper functions for adding/querying temporal intervals
-- [ ] Point-in-time, as-of, and interval query support
+- [x] Design and implement valid time (VT) and transaction time (TT) support
+  - [x] Use named graphs or reification for TT
+  - [x] Use custom or standard properties for VT
+- [x] Helper functions for adding/querying temporal intervals
+- [x] Point-in-time, as-of, and interval query support
 
 ### Provenance
-- [ ] Attach provenance metadata to triples (source, ingestion time, agent)
-- [ ] Utilities for querying provenance
+- [x] Attach provenance metadata to triples (source, ingestion time, agent)
+- [x] Utilities for querying provenance
 
 ---
 
 ## Phase 3: Data Ingestion & Update
 
 ### Incremental & Batch Ingestion
-- [ ] Efficiently add/update/delete triples (preserving temporal context)
-- [ ] Bulk loading utilities (Turtle, N-Triples, RDF/XML)
-- [ ] Data validation against ontology (SHACL or OWL-based)
+- [x] Efficiently add/update/delete triples (preserving temporal context)
+- [x] Bulk loading utilities (Turtle, N-Triples, RDF/XML)
+- [x] Data validation against ontology (SHACL or OWL-based)
 
 ### Conflict Resolution
-- [ ] Implement strategies for temporal/conflicting updates (latest-wins, custom rules)
+- [x] Implement strategies for temporal/conflicting updates (latest-wins, custom rules)
 
 ---
 
 ## Phase 4: Query Engine & Retrieval
 
 ### SPARQL Query API
-- [ ] Pythonic API for SELECT, CONSTRUCT, ASK, UPDATE
-- [ ] Abstract common query patterns (no raw SPARQL needed for basics)
-- [ ] Support federated queries (if GraphDB allows)
+- [x] Pythonic API for SELECT, CONSTRUCT, ASK, UPDATE
+- [x] Abstract common query patterns (no raw SPARQL needed for basics)
+- [x] Support federated queries (if GraphDB allows)
 
 ### Temporal Queries
-- [ ] Point-in-time, as-of, and interval queries (using temporal model)
-- [ ] Result formatting (Pandas DataFrame, JSON, Python objects)
+- [x] Point-in-time, as-of, and interval queries (using temporal model)
+- [x] Result formatting (Pandas DataFrame, JSON, Python objects)
 
 ### Hybrid Search
-- [ ] Semantic search (vector/embedding-based, GraphDB or external)
-- [ ] Full-text search (Lucene integration)
-- [ ] Graph traversal (neighbors, paths, ancestors)
-- [ ] Combined search (RRF/weighted)
+- [x] Semantic search (vector/embedding-based, GraphDB or external)
+- [x] Full-text search (Lucene integration)
+- [x] Graph traversal (neighbors, paths, ancestors)
+- [x] Combined search (RRF/weighted)
 
 ### Explainability
-- [ ] Mechanisms to explain query results (inference, temporal validity, provenance)
+- [x] Mechanisms to explain query results (inference, temporal validity, provenance)
 
 ---
 
 ## Phase 5: GraphDB Adapter Layer
 
 ### Connection & Repository Management
-- [ ] Connection pooling, secure auth (HTTPS, user/pass, API keys)
-- [ ] Programmatic repository creation/deletion/configuration
-- [ ] Repository settings (inference, partitioning)
+- [x] Connection pooling, secure auth (HTTPS, user/pass, API keys)
+- [x] Programmatic repository creation/deletion/configuration
+- [x] Repository settings (inference, partitioning)
 
 ### Performance & Transactions
-- [ ] Bulk loading via GraphDB APIs
-- [ ] Efficient SPARQL query construction
-- [ ] Transaction management (atomic updates)
+- [x] Bulk loading via GraphDB APIs
+- [x] Efficient SPARQL query construction
+- [x] Transaction management (atomic updates)
 
 ---
 
@@ -106,20 +106,20 @@ This document outlines the phased implementation plan for AxiusMEM, a W3C-compli
 ## Phase 8: Non-Functional Requirements
 
 - [ ] Performance benchmarks (ingestion, query latency, scalability)
-- [ ] Robust error handling and resilience (network, GraphDB outages)
-- [ ] Security (auth, authorization, secrets management)
-- [ ] Usability (API clarity, examples, tutorials)
-- [ ] Maintainability (modular code, tests, docs)
-- [ ] Portability (future triplestore adapters, clear separation of concerns)
+- [x] Robust error handling and resilience (network, GraphDB outages)
+- [x] Security (auth, authorization, secrets management)
+- [x] Usability (API clarity, examples, tutorials)
+- [x] Maintainability (modular code, tests, docs)
+- [x] Portability (future triplestore adapters, clear separation of concerns)
 
 ---
 
 ## Phase 9: Testing & Documentation
 
-- [ ] Unit and integration tests for all modules
-- [ ] Sphinx-generated API docs
-- [ ] Example notebooks and tutorials
-- [ ] Environment and deployment guides
+- [x] Unit and integration tests for all modules
+- [x] Sphinx-generated API docs
+- [x] Example notebooks and tutorials
+- [x] Environment and deployment guides
 
 ---
 

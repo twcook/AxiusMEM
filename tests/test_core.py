@@ -41,7 +41,7 @@ def test_add_triples_with_provenance(monkeypatch):
     def fake_attach_provenance(triple, **prov):
         called["triple"] = triple
         called["prov"] = prov
-    monkeypatch.setattr("axiusmem.utils.attach_provenance", fake_attach_provenance)
+    monkeypatch.setattr("axiusmem.core.attach_provenance", fake_attach_provenance)
     mem.add_triples([(s, p, o)], provenance=provenance)
     g = mem.get_graph()
     assert (s, p, o) in g
