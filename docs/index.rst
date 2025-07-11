@@ -12,7 +12,7 @@ AxiusMEM is a W3C-compliant temporal knowledge graph library for AI agents, supp
    quickstart
    api
    PRD_ AxiusMEM <PRD_ AxiusMEM.md>
-   axiusmem_ontology <axiusmem_ontology.ttl>
+   axiusmem_ontology <../src/axiusmem/axiusmem_ontology.ttl>
    docs_dev_guide <docs_dev_guide.md>
 
 Quick Start

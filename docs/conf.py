@@ -12,7 +12,7 @@ sys.path.insert(0, os.path.abspath('../src'))
 project = 'AxiusMEM'
 copyright = '2024, AxiusMEM contributors'
 author = 'AxiusMEM Team'
-release = '1.0.0a'
+release = '1.0.0'
 
 # -- General configuration ---------------------------------------------------
 extensions = [
