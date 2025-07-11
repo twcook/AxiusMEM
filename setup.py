@@ -35,4 +35,5 @@ setup(
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
+    license="MIT",
 ) 

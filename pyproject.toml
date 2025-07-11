@@ -7,7 +7,7 @@ name = "axiusmem"
 version = "1.0.0"
 description = "A W3C-compliant temporal knowledge graph library for AI agents."
 authors = [
-    { name = "Timothy W. Cook" }
+    { name = "Timothy W. Cook", email = "timothywaynecook@gmail.com" },
 ]
 readme = "README.md"
 requires-python = ">=3.9"
@@ -26,7 +26,7 @@ dependencies = [
     "huggingface_hub>=0.23.0",
     "mistralai>=0.1.0"
 ]
-license = { file = "LICENSE" } 
+license = "MIT" 
 
 [tool.pytest.ini_options]
 markers = [
