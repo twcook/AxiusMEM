@@ -10,7 +10,7 @@ sys.path.insert(0, os.path.abspath('../src'))
 
 # -- Project information -----------------------------------------------------
 project = 'AxiusMEM'
-copyright = '2024, AxiusMEM contributors'
+copyright = '2025, AxiusMEM contributors'
 author = 'AxiusMEM Team'
 release = '1.0.0'
 
