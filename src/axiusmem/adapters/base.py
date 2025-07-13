@@ -31,16 +31,19 @@ class BaseTriplestoreAdapter:
 def get_triplestore_adapter_from_env():
     """
     Factory to instantiate the correct triplestore adapter based on environment variables.
+
     Reads:
         TRIPLESTORE_TYPE: 'graphdb', 'jena', etc.
         TRIPLESTORE_URL: base URL or host
         TRIPLESTORE_USER: username (optional)
         TRIPLESTORE_PASSWORD: password (optional)
         TRIPLESTORE_REPOSITORY: repository or dataset name (optional)
+
     Returns:
         An instance of the appropriate triplestore adapter.
+
     Raises:
-        ValueError if TRIPLESTORE_TYPE is unknown or required variables are missing.
+        ValueError: If TRIPLESTORE_TYPE is unknown or required variables are missing.
     """
     import os
     ttype = os.getenv("TRIPLESTORE_TYPE", "graphdb").lower()
