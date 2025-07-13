@@ -56,23 +56,6 @@ axm:Source rdf:type owl:Class ;
     rdfs:subClassOf prov:Entity ; # Reusing PROV-O Entity for sources
     rdfs:comment "Represents the origin or source of information, such as a document, sensor, or user input." .
 
-axm:User rdf:type owl:Class ;
-    rdfs:subClassOf axm:Agent ;
-    rdfs:comment "A user of the system (human or agent)." .
-
-axm:Role rdf:type owl:Class ;
-    rdfs:comment "A role that can be assigned to a user (e.g., admin, agent)." .
-
-axm:hasRole rdf:type owl:ObjectProperty ;
-    rdfs:domain axm:User ;
-    rdfs:range axm:Role ;
-    rdfs:comment "Links a user to a role." .
-
-axm:hasPasswordHash rdf:type owl:DatatypeProperty ;
-    rdfs:domain axm:User ;
-    rdfs:range xsd:string ;
-    rdfs:comment "The password hash for a user (for authentication)." .
-
 # -------------------------------------------------------------------
 # Object Properties
 # -------------------------------------------------------------------

@@ -29,14 +29,15 @@ class AxiusMEM:
             env_path (Optional[str]): Path to .env file for environment variables.
         """
         load_dotenv(env_path or ".env")
-        self.ontology_path = ontology_path or "docs/axiusmem_ontology.ttl"
+        self.ontology_path = ontology_path or "axiusmem_ontology.ttl"
         self.graph = rdflib.Graph()
         self.ontologies = set()
         self.load_ontology(self.ontology_path)
-        self.graphdb_url = os.getenv("AGENT_MEMORY_URL")
-        self.graphdb_user = os.getenv("GRAPHDB_USER")
-        self.graphdb_password = os.getenv("GRAPHDB_PASSWORD")
-        self.graphdb_https = os.getenv("GRAPHDB_USE_HTTPS", "true").lower() == "true"
+        self.triplestore_type = os.getenv("TRIPLESTORE_TYPE")
+        self.triplestore_url = os.getenv("TRIPLESTORE_URL")
+        self.triplestore_user = os.getenv("TRIPLESTORE_USER")
+        self.triplestore_password = os.getenv("TRIPLESTORE_PASSWORD")
+        self.triplestore_repository = os.getenv("TRIPLESTORE_REPOSITORY")
 
     def load_ontology(self, ontology_path: str, format: Optional[str] = None) -> None:
         """

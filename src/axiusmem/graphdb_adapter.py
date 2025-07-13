@@ -1,6 +1,17 @@
 import requests
 import logging
 from typing import Optional, Dict, Any, List, Union
+import os
+import tenacity
+
+# Retry config: 3 attempts, exponential backoff, retry on network/HTTP 5xx
+retry_on_network = tenacity.retry(
+    stop=tenacity.stop_after_attempt(3),
+    wait=tenacity.wait_exponential(multiplier=0.5, min=1, max=8),
+    retry=tenacity.retry_if_exception_type((requests.exceptions.RequestException,)),
+    reraise=True,
+    before_sleep=tenacity.before_sleep_log(logging.getLogger("axiusmem.graphdb_adapter"), logging.WARNING)
+)
 
 class GraphDBAdapter:
     """
@@ -36,6 +47,7 @@ class GraphDBAdapter:
         if user and password:
             self.session.auth = (user, password)
 
+    @retry_on_network
     def test_connection(self):
         """
         Test connection to GraphDB by listing repositories.
@@ -156,6 +168,7 @@ class GraphDBAdapter:
             logging.error(f"Failed to update repository config: {e}")
             return False
 
+    @retry_on_network
     def sparql_select(self, repo_id: str, query: str, infer: bool = True, timeout: int = 60) -> Union[List[Dict[str, Any]], None]:
         """
         Execute a SPARQL SELECT query.
@@ -243,6 +256,7 @@ class GraphDBAdapter:
             logging.error(f"SPARQL ASK failed: {e}")
             return None
 
+    @retry_on_network
     def sparql_update(self, repo_id: str, update_query: str, timeout: int = 60) -> bool:
         """
         Execute a SPARQL UPDATE query.
@@ -269,6 +283,7 @@ class GraphDBAdapter:
             logging.error(f"SPARQL UPDATE failed: {e}")
             return False
 
+    @retry_on_network
     def bulk_load(self, repo_id: str, rdf_path: str, rdf_format: str = "text/turtle") -> bool:
         """
         Bulk load RDF data into the repository using GraphDB's REST API.
@@ -297,60 +312,44 @@ class GraphDBAdapter:
             return False
 
     # Transaction support (GraphDB supports transactions via HTTP, but limited)
-    def begin_transaction(self, repo_id: str) -> Optional[str]:
-        """
-        Begin a transaction. Returns transaction ID if supported.
-
-        Args:
-            repo_id (str): Repository ID.
-
-        Returns:
-            Optional[str]: Transaction ID, or None if not supported/failed.
-        """
+    @retry_on_network
+    def begin_transaction(self, repo_id=None):
+        """Begin a new transaction. Returns a transaction ID."""
+        if not repo_id:
+            repo_id = self.user or os.getenv("TRIPLESTORE_REPOSITORY")
         try:
             resp = self.session.post(f"{self.url}/repositories/{repo_id}/transactions")
             resp.raise_for_status()
-            tx_id = resp.headers.get("location")
-            return tx_id
+            return resp.json()["transactionId"]
         except Exception as e:
-            logging.warning(f"Transaction begin not supported or failed: {e}")
-            return None
+            logging.error(f"Failed to begin transaction: {e}")
+            raise
 
-    def commit_transaction(self, tx_id: str) -> bool:
-        """
-        Commit a transaction by transaction ID.
-
-        Args:
-            tx_id (str): Transaction ID (URL).
-
-        Returns:
-            bool: True if committed, False otherwise.
-        """
+    @retry_on_network
+    def commit_transaction(self, tx_id, repo_id=None):
+        """Commit the transaction with the given ID."""
+        if not repo_id:
+            repo_id = self.user or os.getenv("TRIPLESTORE_REPOSITORY")
         try:
-            resp = self.session.put(f"{tx_id}?action=COMMIT")
+            resp = self.session.put(f"{self.url}/repositories/{repo_id}/transactions/{tx_id}")
             resp.raise_for_status()
             return resp.status_code == 200
         except Exception as e:
-            logging.warning(f"Transaction commit failed: {e}")
-            return False
+            logging.error(f"Failed to commit transaction: {e}")
+            raise
 
-    def rollback_transaction(self, tx_id: str) -> bool:
-        """
-        Rollback a transaction by transaction ID.
-
-        Args:
-            tx_id (str): Transaction ID (URL).
-
-        Returns:
-            bool: True if rolled back, False otherwise.
-        """
+    @retry_on_network
+    def rollback_transaction(self, tx_id, repo_id=None):
+        """Rollback the transaction with the given ID."""
+        if not repo_id:
+            repo_id = self.user or os.getenv("TRIPLESTORE_REPOSITORY")
         try:
-            resp = self.session.put(f"{tx_id}?action=ROLLBACK")
+            resp = self.session.delete(f"{self.url}/repositories/{repo_id}/transactions/{tx_id}")
             resp.raise_for_status()
             return resp.status_code == 200
         except Exception as e:
-            logging.warning(f"Transaction rollback failed: {e}")
-            return False
+            logging.error(f"Failed to rollback transaction: {e}")
+            raise
 
     # Lucene, vector, and federated search stubs
     def check_repository_exists(self, repo_id: str) -> bool:
@@ -439,3 +438,49 @@ class GraphDBAdapter:
         """
         # This is just a wrapper for sparql_select/construct with federated query support
         return self.sparql_select(repo_id, query, timeout=timeout) 
+
+    @retry_on_network
+    def list_named_graphs(self):
+        query = "SELECT DISTINCT ?g WHERE { GRAPH ?g { ?s ?p ?o } }"
+        repo_id = self.user or os.getenv("TRIPLESTORE_REPOSITORY")
+        results = self.sparql_select(repo_id, query)
+        return [r['g']['value'] for r in results] if results else []
+
+    @retry_on_network
+    def create_named_graph(self, graph_uri):
+        # SPARQL 1.1 does not have explicit CREATE GRAPH in GraphDB, but INSERT DATA can create it
+        return self.add_triples_to_named_graph(graph_uri, [])
+
+    @retry_on_network
+    def delete_named_graph(self, graph_uri):
+        repo_id = self.user or os.getenv("TRIPLESTORE_REPOSITORY")
+        update = f"DROP GRAPH <{graph_uri}>"
+        return self.sparql_update(repo_id, update)
+
+    @retry_on_network
+    def clear_named_graph(self, graph_uri):
+        repo_id = self.user or os.getenv("TRIPLESTORE_REPOSITORY")
+        update = f"CLEAR GRAPH <{graph_uri}>"
+        return self.sparql_update(repo_id, update)
+
+    @retry_on_network
+    def add_triples_to_named_graph(self, graph_uri, triples):
+        repo_id = self.user or os.getenv("TRIPLESTORE_REPOSITORY")
+        if not triples:
+            # No-op, but ensures graph exists
+            return True
+        triple_strs = []
+        for s, p, o in triples:
+            s_str = f"<{s}>" if not s.startswith("_") else s  # handle blank nodes
+            p_str = f"<{p}>"
+            o_str = f'"{o}"' if not (str(o).startswith("http://") or str(o).startswith("https://")) else f"<{o}>"
+            triple_strs.append(f"{s_str} {p_str} {o_str} .")
+        update = f"INSERT DATA {{ GRAPH <{graph_uri}> {{ {' '.join(triple_strs)} }} }}"
+        return self.sparql_update(repo_id, update)
+
+    @retry_on_network
+    def get_triples_from_named_graph(self, graph_uri, query):
+        repo_id = self.user or os.getenv("TRIPLESTORE_REPOSITORY")
+        # Wrap the query in GRAPH <graph_uri> if not already
+        wrapped_query = f"SELECT * WHERE {{ GRAPH <{graph_uri}> {{ {query} }} }}"
+        return self.sparql_select(repo_id, wrapped_query) 
