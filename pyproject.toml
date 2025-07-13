@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "axiusmem"
-version = "1.0.0"
+version = "1.1.0"
 description = "A W3C-compliant temporal knowledge graph library for AI agents."
 authors = [
     { name = "Timothy W. Cook", email = "timothywaynecook@gmail.com" },
