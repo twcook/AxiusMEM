@@ -1,0 +1,170 @@
+(AxiusMEM) PS C:\GitHub\AxiusMEM> pytest
+================================================= test session starts =================================================
+platform win32 -- Python 3.13.5, pytest-8.4.1, pluggy-1.6.0
+rootdir: C:\GitHub\AxiusMEM
+configfile: pyproject.toml
+plugins: anyio-4.9.0, langsmith-0.4.4
+collected 46 items
+
+tests\test_agent_utils.py .....                                                                                  [ 10%]
+tests\test_core.py ...                                                                                           [ 17%]
+tests\test_core_ingestion.py ...                                                                                 [ 23%]
+tests\test_core_query.py ...........                                                                             [ 47%]
+tests\test_graphdb_adapter.py sFFFFFsFFFFF                                                                       [ 73%]
+tests\test_orm.py .....                                                                                          [ 84%]
+tests\test_query_engine.py ...                                                                                   [ 91%]
+tests\test_temporal.py ....                                                                                      [100%]
+
+====================================================== FAILURES =======================================================
+_______________________________________________ test_list_repositories ________________________________________________
+
+    @pytest.mark.integration
+    def test_list_repositories():
+        """Test listing repositories."""
+        url = get_env("TRIPLESTORE_URL")
+        adapter = get_triplestore_adapter_from_env()
+>       repos = adapter.list_repositories()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'JenaAdapter' object has no attribute 'list_repositories'
+
+tests\test_graphdb_adapter.py:36: AttributeError
+____________________________________________ test_check_repository_exists _____________________________________________
+
+    @pytest.mark.integration
+    def test_check_repository_exists():
+        """Test repository existence check."""
+        url = get_env("TRIPLESTORE_URL")
+        repo_id = get_env("TRIPLESTORE_REPOSITORY")
+        adapter = get_triplestore_adapter_from_env()
+>       assert adapter.check_repository_exists(repo_id) is True
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'JenaAdapter' object has no attribute 'check_repository_exists'
+
+tests\test_graphdb_adapter.py:45: AttributeError
+________________________________________________ test_graphdb_version _________________________________________________
+
+    @pytest.mark.integration
+    def test_graphdb_version():
+        """Test GraphDB version retrieval."""
+        url = get_env("TRIPLESTORE_URL")
+        adapter = get_triplestore_adapter_from_env()
+>       version = adapter.get_graphdb_version()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'JenaAdapter' object has no attribute 'get_graphdb_version'
+
+tests\test_graphdb_adapter.py:53: AttributeError
+_____________________________________________ test_sparql_select_and_ask ______________________________________________
+
+    @pytest.mark.integration
+    def test_sparql_select_and_ask():
+        """Test SPARQL SELECT and ASK queries."""
+        url = get_env("TRIPLESTORE_URL")
+        repo_id = get_env("TRIPLESTORE_REPOSITORY")
+        adapter = get_triplestore_adapter_from_env()
+        # Simple ASK query
+>       ask = adapter.sparql_ask(repo_id, "ASK { ?s ?p ?o }")
+              ^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'JenaAdapter' object has no attribute 'sparql_ask'
+
+tests\test_graphdb_adapter.py:63: AttributeError
+__________________________________________ test_sparql_construct_and_update ___________________________________________
+
+    @pytest.mark.integration
+    def test_sparql_construct_and_update():
+        """Test SPARQL CONSTRUCT and UPDATE queries."""
+        url = get_env("TRIPLESTORE_URL")
+        repo_id = get_env("TRIPLESTORE_REPOSITORY")
+        adapter = get_triplestore_adapter_from_env()
+        # CONSTRUCT query
+>       construct = adapter.sparql_construct(repo_id, "CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o } LIMIT 1")
+                    ^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'JenaAdapter' object has no attribute 'sparql_construct'
+
+tests\test_graphdb_adapter.py:76: AttributeError
+______________________________________________ test_transaction_support _______________________________________________
+
+    @pytest.mark.integration
+    def test_transaction_support():
+        """Test transaction begin/commit/rollback (if supported)."""
+        url = get_env("TRIPLESTORE_URL")
+        repo_id = get_env("TRIPLESTORE_REPOSITORY")
+        adapter = get_triplestore_adapter_from_env()
+>       tx_id = adapter.begin_transaction(repo_id)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'JenaAdapter' object has no attribute 'begin_transaction'
+
+tests\test_graphdb_adapter.py:105: AttributeError
+_________________________________________________ test_lucene_search __________________________________________________
+
+    @pytest.mark.integration
+    def test_lucene_search():
+        """Test Lucene full-text search (returns empty or bindings)."""
+        url = get_env("TRIPLESTORE_URL")
+        repo_id = get_env("TRIPLESTORE_REPOSITORY")
+        adapter = get_triplestore_adapter_from_env()
+>       results = adapter.lucene_search(repo_id, "memory")
+                  ^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'JenaAdapter' object has no attribute 'lucene_search'
+
+tests\test_graphdb_adapter.py:121: AttributeError
+______________________________________________ test_federated_query_stub ______________________________________________
+
+    @pytest.mark.integration
+    def test_federated_query_stub():
+        """Test federated query stub (should return list or None)."""
+        url = get_env("TRIPLESTORE_URL")
+        repo_id = get_env("TRIPLESTORE_REPOSITORY")
+        adapter = get_triplestore_adapter_from_env()
+        # This is just a SELECT query for now
+>       results = adapter.federated_query(repo_id, "SELECT * WHERE { ?s ?p ?o } LIMIT 1")
+                  ^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'JenaAdapter' object has no attribute 'federated_query'
+
+tests\test_graphdb_adapter.py:131: AttributeError
+_______________________________________________ test_vector_search_stub _______________________________________________
+
+    @pytest.mark.integration
+    def test_vector_search_stub():
+        """Test vector search stub (should return None)."""
+        url = get_env("TRIPLESTORE_URL")
+        repo_id = get_env("TRIPLESTORE_REPOSITORY")
+        adapter = get_triplestore_adapter_from_env()
+>       results = adapter.vector_search(repo_id, [0.1, 0.2, 0.3])
+                  ^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'JenaAdapter' object has no attribute 'vector_search'
+
+tests\test_graphdb_adapter.py:140: AttributeError
+__________________________________________ test_create_and_delete_repository __________________________________________
+
+    @pytest.mark.integration
+    def test_create_and_delete_repository():
+        """Test creating and deleting a repository (skipped if not allowed)."""
+        url = get_env("TRIPLESTORE_URL")
+        adapter = get_triplestore_adapter_from_env()
+        test_repo_id = "test_axiusmem_repo"
+        repo_config = {
+            "id": test_repo_id,
+            "params": {
+                "repositoryType": "file-repository",
+                "ruleset": "owl-horst-optimized",
+                "storage-folder": "/tmp/test_axiusmem_repo"
+            }
+        }
+>       created = adapter.create_repository(repo_config)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'JenaAdapter' object has no attribute 'create_repository'
+
+tests\test_graphdb_adapter.py:157: AttributeError
+=============================================== short test summary info ===============================================
+FAILED tests/test_graphdb_adapter.py::test_list_repositories - AttributeError: 'JenaAdapter' object has no attribute 'list_repositories'
+FAILED tests/test_graphdb_adapter.py::test_check_repository_exists - AttributeError: 'JenaAdapter' object has no attribute 'check_repository_exists'
+FAILED tests/test_graphdb_adapter.py::test_graphdb_version - AttributeError: 'JenaAdapter' object has no attribute 'get_graphdb_version'
+FAILED tests/test_graphdb_adapter.py::test_sparql_select_and_ask - AttributeError: 'JenaAdapter' object has no attribute 'sparql_ask'
+FAILED tests/test_graphdb_adapter.py::test_sparql_construct_and_update - AttributeError: 'JenaAdapter' object has no attribute 'sparql_construct'
+FAILED tests/test_graphdb_adapter.py::test_transaction_support - AttributeError: 'JenaAdapter' object has no attribute 'begin_transaction'
+FAILED tests/test_graphdb_adapter.py::test_lucene_search - AttributeError: 'JenaAdapter' object has no attribute 'lucene_search'
+FAILED tests/test_graphdb_adapter.py::test_federated_query_stub - AttributeError: 'JenaAdapter' object has no attribute 'federated_query'
+FAILED tests/test_graphdb_adapter.py::test_vector_search_stub - AttributeError: 'JenaAdapter' object has no attribute 'vector_search'
+FAILED tests/test_graphdb_adapter.py::test_create_and_delete_repository - AttributeError: 'JenaAdapter' object has no attribute 'create_repository'
+====================================== 10 failed, 34 passed, 2 skipped in 1.12s =======================================
+(AxiusMEM) PS C:\GitHub\AxiusMEM>

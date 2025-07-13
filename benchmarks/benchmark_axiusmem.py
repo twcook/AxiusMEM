@@ -3,15 +3,11 @@ import time
 import json
 from rdflib import Graph, URIRef, Literal, Namespace
 from axiusmem.core import AxiusMEM
-from axiusmem.graphdb_adapter import GraphDBAdapter
+from axiusmem.adapters.base import get_triplestore_adapter_from_env
 
 def get_env(var, default=None):
-    v = os.getenv(var)
-    if not v:
-        if default is not None:
-            return default
-        raise RuntimeError(f"Env var {var} not set.")
-    return v
+    import os
+    return os.getenv(var, default)
 
 BENCH_NS = Namespace("http://axiusmem.org/bench/")
 
@@ -24,12 +20,14 @@ def benchmark_ingestion(triple_count=10000, batch_size=1000, mode='incremental')
     # Generate synthetic triples
     for i in range(triple_count):
         g.add((BENCH_NS[f"s{i}"], BENCH_NS[f"p"], Literal(f"o{i}")))
-    adapter = GraphDBAdapter(
-        get_env("AGENT_MEMORY_URL"),
-        os.getenv("GRAPHDB_USER"),
-        os.getenv("GRAPHDB_PASSWORD")
-    )
-    repo_id = get_env("GRAPHDB_REPO_ID")
+    # Replace all AGENT_MEMORY_URL, GRAPHDB_USER, GRAPHDB_PASSWORD, GRAPHDB_REPO_ID with generic names
+    # Example usage:
+    # url = get_env("TRIPLESTORE_URL")
+    # user = get_env("TRIPLESTORE_USER")
+    # password = get_env("TRIPLESTORE_PASSWORD")
+    # repo_id = get_env("TRIPLESTORE_REPOSITORY")
+    adapter = get_triplestore_adapter_from_env()
+    repo_id = get_env("TRIPLESTORE_REPOSITORY")
     start = time.time()
     if mode == 'bulk':
         tmpfile = "bench_bulk.ttl"
@@ -58,12 +56,14 @@ def benchmark_query_latency(query_type='point', repetitions=10):
     Benchmark query latency for a given query type.
     Returns: dict with timing stats.
     """
-    adapter = GraphDBAdapter(
-        get_env("AGENT_MEMORY_URL"),
-        os.getenv("GRAPHDB_USER"),
-        os.getenv("GRAPHDB_PASSWORD")
-    )
-    repo_id = get_env("GRAPHDB_REPO_ID")
+    # Replace all AGENT_MEMORY_URL, GRAPHDB_USER, GRAPHDB_PASSWORD, GRAPHDB_REPO_ID with generic names
+    # Example usage:
+    # url = get_env("TRIPLESTORE_URL")
+    # user = get_env("TRIPLESTORE_USER")
+    # password = get_env("TRIPLESTORE_PASSWORD")
+    # repo_id = get_env("TRIPLESTORE_REPOSITORY")
+    adapter = get_triplestore_adapter_from_env()
+    repo_id = get_env("TRIPLESTORE_REPOSITORY")
     if query_type == 'point':
         query = "SELECT * WHERE { ?s ?p ?o } LIMIT 1"
     elif query_type == 'temporal':
@@ -106,7 +106,7 @@ def benchmark_resilience():
     # In practice, this would require stopping GraphDB or blocking network.
     # Here, we just simulate a connection error.
     try:
-        adapter = GraphDBAdapter('http://localhost:9999')
+        adapter = get_triplestore_adapter_from_env()
         adapter.test_connection()
     except Exception as e:
         return {'resilience': 'handled', 'error': str(e)}

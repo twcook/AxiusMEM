@@ -52,3 +52,42 @@ See [LICENSE](LICENSE).
 ## Community & Support
 - Feedback, issues, and feature requests: [GitHub Issues](https://github.com/your-org/axiusmem/issues)
 - Roadmap and discussions: [GitHub Discussions](https://github.com/your-org/axiusmem/discussions) 
+
+## Triplestore Configuration
+
+AxiusMEM now supports generic configuration for multiple triplestores. Set the following environment variables:
+
+- `TRIPLESTORE_TYPE`: The type of triplestore to use (`graphdb`, `jena`, etc.)
+- `TRIPLESTORE_URL`: The base URL or host for the triplestore
+- `TRIPLESTORE_USER`: Username for authentication (optional)
+- `TRIPLESTORE_PASSWORD`: Password for authentication (optional)
+- `TRIPLESTORE_REPOSITORY`: Repository or dataset name (if required by the backend)
+
+Example for GraphDB:
+```
+TRIPLESTORE_TYPE=graphdb
+TRIPLESTORE_URL=http://localhost:7200
+TRIPLESTORE_USER=admin
+TRIPLESTORE_PASSWORD=secret
+TRIPLESTORE_REPOSITORY=myrepo
+```
+
+Example for Jena Fuseki:
+```
+TRIPLESTORE_TYPE=jena
+TRIPLESTORE_URL=http://localhost:3030
+TRIPLESTORE_USER=admin
+TRIPLESTORE_PASSWORD=secret
+TRIPLESTORE_REPOSITORY=Default
+```
+
+## Adapter Factory Usage
+
+To obtain the correct adapter for your environment, use:
+
+```python
+from axiusmem.adapters.base import get_triplestore_adapter_from_env
+adapter = get_triplestore_adapter_from_env()
+```
+
+This will automatically select and configure the appropriate adapter based on your environment variables. 
