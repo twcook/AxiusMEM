@@ -39,9 +39,7 @@ mem.connect_graphdb()
 
 ## Documentation
 - [Sphinx Docs (HTML)](https://axiusmem.readthedocs.io/en/latest/)
-- [Product Requirements (PRD)](docs/PRD_%20AxiusMEM.md)
 - [Ontology (Turtle)](src/axiusmem/axiusmem_ontology.ttl)
-- [Developer Guide](docs/docs_dev_guide.md)
 
 ## Contributing
 See [CONTRIBUTORS.md](CONTRIBUTORS.md) and the [Code of Conduct](CODE_OF_CONDUCT.md).
