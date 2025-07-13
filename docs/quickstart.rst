@@ -63,6 +63,76 @@ Minimal Example:
     mem.connect_graphdb()
     # Add triples, query, manage agent memory, etc.
 
+Jena Fuseki Admin and Dataset Management
+---------------------------------------
+
+You can manage datasets and check server status using the following methods on the JenaAdapter:
+
+.. code-block:: python
+
+   from axiusmem.adapters.base import get_triplestore_adapter_from_env
+   adapter = get_triplestore_adapter_from_env()
+
+   # List all datasets
+   datasets = adapter.list_datasets()
+   print("Datasets:", datasets)
+
+   # Create a new in-memory dataset
+   adapter.create_dataset("mynewdataset", db_type="mem")
+
+   # Delete a dataset
+   adapter.delete_dataset("mynewdataset")
+
+   # Get server status
+   status = adapter.get_server_status()
+   print("Server status:", status)
+
+SPARQL CONSTRUCT, DESCRIBE, and ASK
+-----------------------------------
+
+You can use the following methods to run advanced SPARQL queries:
+
+.. code-block:: python
+
+   from axiusmem.adapters.base import get_triplestore_adapter_from_env
+   adapter = get_triplestore_adapter_from_env()
+
+   # SPARQL CONSTRUCT
+   turtle = adapter.sparql_construct("CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o } LIMIT 1")
+   print(turtle)
+
+   # SPARQL DESCRIBE
+   turtle = adapter.sparql_describe("DESCRIBE <http://example.org/s>")
+   print(turtle)
+
+   # SPARQL ASK
+   exists = adapter.sparql_ask("ASK { ?s ?p ?o }")
+   print(exists)
+
+Dataset Configuration, Backup, and Restore
+-----------------------------------------
+
+You can manage dataset configuration and perform backup/restore operations:
+
+.. code-block:: python
+
+   from axiusmem.adapters.base import get_triplestore_adapter_from_env
+   adapter = get_triplestore_adapter_from_env()
+
+   # Get dataset config
+   config = adapter.get_dataset_config("Default")
+   print(config)
+
+   # Set dataset config (example: change label)
+   config["label"] = "New Label"
+   adapter.set_dataset_config("Default", config)
+
+   # Backup a dataset
+   adapter.backup_dataset("Default", "Default-backup.zip")
+
+   # Restore a dataset
+   adapter.restore_dataset("Default", "Default-backup.zip")
+
 See the :doc:`api` for full API reference. 
 
 Available Triplestore Types
@@ -74,7 +144,7 @@ The following options are available for the `TRIPLESTORE_TYPE` environment varia
 | Type           | Description                   | Status                   |
 +================+===============================+==========================+
 | graphdb        | Ontotext GraphDB              | Implemented              |
-| jena           | Apache Jena Fuseki            | Implemented (basic)      |
+| jena           | Apache Jena Fuseki            | Implemented              |
 | allegrograph   | Franz AllegroGraph            | Stub                     |
 | anzograph      | Cambridge Semantics AnzoGraph | Stub                     |
 | blazegraph     | Blazegraph                    | Stub                     |

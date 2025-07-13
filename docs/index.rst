@@ -10,8 +10,39 @@ Welcome to AxiusMEM's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   api
    quickstart
+   api
+   adapters/index
+   temporal
+   agent_memory
+   orm
+   dev_contributing
+
+Adapters
+--------
+
+AxiusMEM supports a variety of triplestore backends via adapters. See the documentation for each adapter for details, usage, and implementation status:
+
+- :doc:`adapters/jena_adapter`
+- :doc:`adapters/graphdb_adapter`
+- :doc:`adapters/allegrograph_adapter`
+- :doc:`adapters/anzograph_adapter`
+- :doc:`adapters/blazegraph_adapter`
+- :doc:`adapters/dydra_adapter`
+- :doc:`adapters/fourstore_adapter`
+- :doc:`adapters/jena_sdb_adapter`
+- :doc:`adapters/marklogic_adapter`
+- :doc:`adapters/mulgara_adapter`
+- :doc:`adapters/neptune_adapter`
+- :doc:`adapters/rdf4j_adapter`
+- :doc:`adapters/rdflib_adapter`
+- :doc:`adapters/rdfox_adapter`
+- :doc:`adapters/redland_adapter`
+- :doc:`adapters/redstore_adapter`
+- :doc:`adapters/stardog_adapter`
+- :doc:`adapters/virtuoso_adapter`
+
+Implemented adapters have full usage documentation. Stub adapters are not yet implemented and will raise NotImplementedError if used.
 
 Jena Fuseki Adapter Usage
 -------------------------

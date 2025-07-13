@@ -1,7 +1,7 @@
 class BaseTriplestoreAdapter:
     """
     Abstract base class for all triplestore adapters in AxiusMEM.
-    Defines the required interface for RDF store integration.
+    Defines the required interface for RDF store integration, including transaction support.
     """
     def connect(self):
         """Establish a connection to the triplestore."""
@@ -26,6 +26,44 @@ class BaseTriplestoreAdapter:
     def test_connection(self):
         """Test the connection to the triplestore."""
         raise NotImplementedError("test_connection() must be implemented by subclass.")
+
+    # Transaction support
+    def begin_transaction(self):
+        """Begin a new transaction. Returns a transaction ID or handle."""
+        raise NotImplementedError("begin_transaction() must be implemented by subclass if supported.")
+
+    def commit_transaction(self, tx_id):
+        """Commit the transaction with the given ID."""
+        raise NotImplementedError("commit_transaction() must be implemented by subclass if supported.")
+
+    def rollback_transaction(self, tx_id):
+        """Rollback the transaction with the given ID."""
+        raise NotImplementedError("rollback_transaction() must be implemented by subclass if supported.")
+
+    # Named graph management
+    def list_named_graphs(self):
+        """List all named graphs in the triplestore."""
+        raise NotImplementedError("list_named_graphs() must be implemented by subclass if supported.")
+
+    def create_named_graph(self, graph_uri):
+        """Create a new named graph (may be a no-op for some stores)."""
+        raise NotImplementedError("create_named_graph() must be implemented by subclass if supported.")
+
+    def delete_named_graph(self, graph_uri):
+        """Delete a named graph and all its triples."""
+        raise NotImplementedError("delete_named_graph() must be implemented by subclass if supported.")
+
+    def clear_named_graph(self, graph_uri):
+        """Remove all triples from a named graph, but keep the graph itself."""
+        raise NotImplementedError("clear_named_graph() must be implemented by subclass if supported.")
+
+    def add_triples_to_named_graph(self, graph_uri, triples):
+        """Add triples to a named graph."""
+        raise NotImplementedError("add_triples_to_named_graph() must be implemented by subclass if supported.")
+
+    def get_triples_from_named_graph(self, graph_uri, query):
+        """Run a SPARQL query against a named graph and return results."""
+        raise NotImplementedError("get_triples_from_named_graph() must be implemented by subclass if supported.")
 
 
 def get_triplestore_adapter_from_env():

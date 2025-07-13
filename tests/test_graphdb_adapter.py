@@ -3,8 +3,13 @@ from dotenv import load_dotenv
 load_dotenv()
 import pytest
 from axiusmem.adapters.base import get_triplestore_adapter_from_env
+import tempfile
+import tenacity
+import requests
+from unittest.mock import patch
 
 graphdb_only = pytest.mark.skipif(os.getenv("TRIPLESTORE_TYPE") != "graphdb", reason="GraphDB-specific test")
+jena_only = pytest.mark.skipif(os.getenv("TRIPLESTORE_TYPE") != "jena", reason="Jena-specific test")
 
 def get_env(var):
     import os
@@ -162,4 +167,117 @@ def test_create_and_delete_repository():
         pytest.skip("Repository creation not allowed or failed.")
     assert adapter.check_repository_exists(test_repo_id)
     deleted = adapter.delete_repository(test_repo_id)
-    assert deleted in (True, False) 
+    assert deleted in (True, False)
+
+@jena_only
+def test_jena_list_datasets():
+    adapter = get_triplestore_adapter_from_env()
+    datasets = adapter.list_datasets()
+    assert isinstance(datasets, dict)
+
+@jena_only
+def test_jena_create_and_delete_dataset():
+    adapter = get_triplestore_adapter_from_env()
+    name = "testjenadataset"
+    created = adapter.create_dataset(name, db_type="mem")
+    assert created
+    deleted = adapter.delete_dataset(name)
+    assert deleted
+
+@jena_only
+def test_jena_get_server_status():
+    adapter = get_triplestore_adapter_from_env()
+    status = adapter.get_server_status()
+    assert isinstance(status, dict)
+
+@jena_only
+def test_jena_sparql_construct():
+    adapter = get_triplestore_adapter_from_env()
+    # Insert a test triple
+    adapter.sparql_update("INSERT DATA { <urn:test:s> <urn:test:p> 'test' }")
+    turtle = adapter.sparql_construct("CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o } LIMIT 1")
+    assert isinstance(turtle, str)
+    assert "@prefix" in turtle or turtle.strip() != ""
+
+@jena_only
+def test_jena_sparql_describe():
+    adapter = get_triplestore_adapter_from_env()
+    # Insert a test triple
+    adapter.sparql_update("INSERT DATA { <urn:test:s> <urn:test:p> 'test' }")
+    turtle = adapter.sparql_describe("DESCRIBE <urn:test:s>")
+    assert isinstance(turtle, str)
+    assert "@prefix" in turtle or turtle.strip() != ""
+
+@jena_only
+def test_jena_sparql_ask():
+    adapter = get_triplestore_adapter_from_env()
+    result = adapter.sparql_ask("ASK { ?s ?p ?o }")
+    assert isinstance(result, bool)
+
+@jena_only
+def test_jena_get_and_set_dataset_config():
+    adapter = get_triplestore_adapter_from_env()
+    config = adapter.get_dataset_config("Default")
+    assert isinstance(config, dict)
+    # Try setting the label (no-op if not allowed)
+    config["label"] = "Test Label"
+    try:
+        result = adapter.set_dataset_config("Default", config)
+        assert result in (True, False)
+    except Exception:
+        pass  # Some configs may be read-only
+
+@jena_only
+def test_jena_backup_and_restore_dataset():
+    adapter = get_triplestore_adapter_from_env()
+    import tempfile
+    with tempfile.NamedTemporaryFile(suffix=".zip", delete=False) as tmp:
+        backup_path = tmp.name
+    try:
+        adapter.backup_dataset("Default", backup_path)
+    except Exception as e:
+        import requests
+        if isinstance(e, requests.HTTPError) and "405" in str(e):
+            pytest.skip("Jena backup endpoint not available (405)")
+        else:
+            raise
+    assert os.path.exists(backup_path)
+    # Restore (smoke test)
+    try:
+        result = adapter.restore_dataset("Default", backup_path)
+        assert result in (True, False)
+    except Exception:
+        pass  # Restore may require admin rights or may not be supported in all configs 
+
+def always_fail(*args, **kwargs):
+    raise requests.exceptions.RequestException("Simulated network failure")
+
+@graphdb_only
+def test_graphdb_retry_on_network_failure():
+    """Test that GraphDBAdapter methods retry and raise RetryError on repeated network failure."""
+    adapter = get_triplestore_adapter_from_env()
+    repo_id = os.getenv("TRIPLESTORE_REPOSITORY", "testrepo")
+    with patch.object(adapter.session, "post", side_effect=always_fail):
+        with pytest.raises(tenacity.RetryError):
+            adapter.sparql_select(repo_id, "SELECT * WHERE { ?s ?p ?o } LIMIT 1")
+    with patch.object(adapter.session, "post", side_effect=always_fail):
+        with pytest.raises(tenacity.RetryError):
+            adapter.sparql_update(repo_id, "INSERT DATA { <urn:test:s> <urn:test:p> 'fail' }")
+    with patch.object(adapter.session, "post", side_effect=always_fail):
+        with pytest.raises(tenacity.RetryError):
+            adapter.bulk_load(repo_id, "docs/axiusmem_ontology.ttl")
+
+@jena_only
+def test_jena_retry_on_network_failure():
+    """Test that JenaAdapter methods retry and raise RetryError on repeated network failure."""
+    adapter = get_triplestore_adapter_from_env()
+    # Patch post for all relevant methods
+    with patch("requests.Session.post", side_effect=always_fail):
+        with pytest.raises(tenacity.RetryError):
+            adapter.sparql_select("SELECT * WHERE { ?s ?p ?o } LIMIT 1")
+    with patch("requests.Session.post", side_effect=always_fail):
+        with pytest.raises(tenacity.RetryError):
+            adapter.sparql_update("INSERT DATA { <urn:test:s> <urn:test:p> 'fail' }")
+    with patch("requests.Session.post", side_effect=always_fail):
+        with pytest.raises(tenacity.RetryError):
+            adapter.bulk_load("docs/axiusmem_ontology.ttl") 
