@@ -1,7 +1,7 @@
 Adapters
 ========
 
-AxiusMEM provides a unified interface for triplestore integration via the `BaseTriplestoreAdapter` abstract base class. All concrete adapters inherit from this base class and implement the required methods for SPARQL queries, updates, bulk loading, transactions, and named graph management (where supported).
+AxiusMEM™ provides a unified interface for triplestore integration via the `BaseTriplestoreAdapter` abstract base class. All concrete adapters inherit from this base class and implement the required methods for SPARQL queries, updates, bulk loading, transactions, and named graph management (where supported).
 
 **Adapter Factory:**
 

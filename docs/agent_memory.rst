@@ -1,7 +1,7 @@
 Agent Memory Utilities
 =====================
 
-AxiusMEM provides utilities to store, retrieve, and format agent-specific memories and context in the knowledge graph, and to propose ontology updates.
+AxiusMEM™ provides utilities to store, retrieve, and format agent-specific memories and context in the knowledge graph, and to propose ontology updates.
 
 Overview
 --------

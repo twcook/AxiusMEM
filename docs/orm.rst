@@ -1,7 +1,7 @@
 ORM Utilities
 =============
 
-AxiusMEM provides ORM-like helpers to map Python dataclasses or dicts to RDF triples and vice versa, define entity/relationship types, and serialize/deserialize objects.
+AxiusMEM™ provides ORM-like helpers to map Python dataclasses or dicts to RDF triples and vice versa, define entity/relationship types, and serialize/deserialize objects.
 
 Overview
 --------

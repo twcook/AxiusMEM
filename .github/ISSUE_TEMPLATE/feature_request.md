@@ -1,6 +1,6 @@
 ---
 name: Feature Request
-description: Suggest an idea or enhancement for AxiusMEM
+description: Suggest an idea or enhancement for AxiusMEM™
 labels: enhancement
 ---
 

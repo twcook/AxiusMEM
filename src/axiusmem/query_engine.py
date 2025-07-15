@@ -1,8 +1,4 @@
-"""
-Query engine for SPARQL construction and execution in AxiusMEM.
-
-Provides functions to run SPARQL SELECT, CONSTRUCT, and UPDATE queries on rdflib graphs, with results formatted for Pythonic use.
-"""
+"""Query engine for SPARQL construction and execution in AxiusMEM™."""
 import pandas as pd
 
 def sparql_select(graph, query):

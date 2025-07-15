@@ -19,7 +19,7 @@ Adapter Factory
 User and Role Management REST API
 =================================
 
-AxiusMEM provides a REST API for user and role management, supporting admin and agent roles.
+AxiusMEM™ provides a REST API for user and role management, supporting admin and agent roles.
 
 Features
 --------
@@ -69,7 +69,7 @@ See the OpenAPI docs for all endpoints and details.
 Server Logs and Statistics
 =========================
 
-AxiusMEM tracks server statistics and logs all API requests and responses. Admins can access live server stats via a dedicated endpoint.
+AxiusMEM™ tracks server statistics and logs all API requests and responses. Admins can access live server stats via a dedicated endpoint.
 
 Features
 --------
@@ -106,7 +106,7 @@ See logs in your console or log file for detailed request/response info.
 Transactions API
 ===============
 
-AxiusMEM provides admin-only endpoints for triplestore transactions (begin, commit, rollback) if supported by the backend adapter.
+AxiusMEM™ provides admin-only endpoints for triplestore transactions (begin, commit, rollback) if supported by the backend adapter.
 
 Endpoints
 ---------
@@ -141,7 +141,7 @@ See the OpenAPI docs for details and adapter support.
 Transaction API Tests
 ====================
 
-AxiusMEM includes automated tests for the transaction API endpoints. These tests:
+AxiusMEM™ includes automated tests for the transaction API endpoints. These tests:
 
 - Verify that `POST /transactions/begin` returns a transaction ID if supported, or a 501 error if not.
 - Verify that `POST /transactions/{tx_id}/commit` and `/rollback` succeed for supported adapters.
@@ -158,7 +158,7 @@ See `tests/test_api.py` for details and to extend coverage.
 Named Graph Management API
 =========================
 
-AxiusMEM provides admin-only endpoints for managing named graphs (if supported by the backend adapter).
+AxiusMEM™ provides admin-only endpoints for managing named graphs (if supported by the backend adapter).
 
 Endpoints
 ---------
@@ -205,7 +205,7 @@ See the OpenAPI docs for details and adapter support.
 Public SPARQL Endpoint
 =====================
 
-AxiusMEM provides a public ``GET /sparql`` endpoint for running SPARQL SELECT and ASK queries via HTTP GET.
+AxiusMEM™ provides a public ``GET /sparql`` endpoint for running SPARQL SELECT and ASK queries via HTTP GET.
 
 Endpoint
 --------
@@ -233,7 +233,7 @@ See the OpenAPI docs for details and adapter support.
 Automatic Retry Policy
 =====================
 
-AxiusMEM automatically retries triplestore and network operations to improve reliability in the face of transient errors.
+AxiusMEM™ automatically retries triplestore and network operations to improve reliability in the face of transient errors.
 
 - **What is retried:**
   - All network/triplestore operations (SPARQL queries, updates, transactions, named graph ops) in supported adapters (GraphDB, Jena, etc.)
@@ -255,7 +255,7 @@ See the OpenAPI docs and logs for details.
 Error Handling and Retry Responses
 =================================
 
-AxiusMEM provides clear, user-facing error messages for all API endpoints. If an operation is retried and still fails, the API returns a 503 with a message indicating the retry attempts. For other errors, a 500 is returned with context.
+AxiusMEM™ provides clear, user-facing error messages for all API endpoints. If an operation is retried and still fails, the API returns a 503 with a message indicating the retry attempts. For other errors, a 500 is returned with context.
 
 Example Error Responses
 ----------------------
@@ -285,7 +285,7 @@ See the OpenAPI docs for details and troubleshooting.
 Health Check, Metrics, and Tasks Endpoints
 =========================================
 
-AxiusMEM provides endpoints for health checks, server metrics, and background tasks.
+AxiusMEM™ provides endpoints for health checks, server metrics, and background tasks.
 
 Endpoints
 ---------

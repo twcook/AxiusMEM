@@ -9,11 +9,11 @@ from .query_engine import sparql_select, sparql_construct, sparql_update
 
 class AxiusMEM:
     """
-    AxiusMEM: W3C-compliant temporal knowledge graph core for AI agents.
+    AxiusMEM™: W3C-compliant temporal knowledge graph core for AI agents.
 
     This class manages an RDF graph, supports ontology loading, bi-temporal data (valid/transaction time),
     provenance, ingestion, querying, and temporal reasoning. It is the main entry point for interacting with
-    the AxiusMEM knowledge graph in Python.
+    the AxiusMEM™ knowledge graph in Python.
 
     Example:
         >>> mem = AxiusMEM()

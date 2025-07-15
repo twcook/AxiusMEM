@@ -1,7 +1,7 @@
 Quick Start
 ===========
 
-Install AxiusMEM:
+Install AxiusMEM™:
 
 .. code-block:: bash
 
@@ -16,7 +16,7 @@ Or with conda:
 Set Environment Variables
 -------------------------
 
-Before running any AxiusMEM code, set the following environment variables so the library can connect to your Jena Fuseki triplestore.
+Before running any AxiusMEM™ code, set the following environment variables so the library can connect to your Jena Fuseki triplestore.
 
 **Option 1: Using a .env file (recommended)**
 

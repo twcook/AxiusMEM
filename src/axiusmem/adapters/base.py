@@ -2,7 +2,7 @@ import abc
 
 class BaseTriplestoreAdapter(abc.ABC):
     """
-    Abstract base class for all triplestore adapters in AxiusMEM.
+    Abstract base class for all triplestore adapters in AxiusMEM™.
     Defines the required interface for RDF store integration, including transaction support.
     """
     @abc.abstractmethod

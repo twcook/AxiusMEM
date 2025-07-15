@@ -1,9 +1,4 @@
-"""
-Temporal logic helpers for bi-temporal data model in AxiusMEM.
-
-This module provides functions to attach and query valid time and transaction time for RDF triples,
-supporting point-in-time, as-of, and interval-based temporal reasoning.
-"""
+"""Temporal logic helpers for bi-temporal data model in AxiusMEM™."""
 from rdflib import URIRef, BNode, Literal, Graph
 from rdflib.namespace import RDF, Namespace
 from typing import Optional, Tuple

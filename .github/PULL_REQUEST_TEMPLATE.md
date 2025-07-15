@@ -1,6 +1,6 @@
 # Pull Request
 
-Thank you for contributing to AxiusMEM!
+Thank you for contributing to AxiusMEM™!
 
 ## Description
 Please describe your changes and the motivation behind them.

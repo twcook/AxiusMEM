@@ -1,9 +1,9 @@
-.. AxiusMEM documentation master file, created by
+.. AxiusMEM™ documentation master file, created by
    sphinx-quickstart on Fri Jun 14 2024.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to AxiusMEM's documentation!
+Welcome to AxiusMEM™'s documentation!
 ====================================
 
 .. toctree::
@@ -21,7 +21,7 @@ Welcome to AxiusMEM's documentation!
 Adapters
 --------
 
-AxiusMEM supports a variety of triplestore backends via adapters. See the documentation for each adapter for details, usage, and implementation status:
+AxiusMEM™ supports a variety of triplestore backends via adapters. See the documentation for each adapter for details, usage, and implementation status:
 
 - :doc:`adapters/jena_adapter`
 - :doc:`adapters/graphdb_adapter`
@@ -46,7 +46,7 @@ Implemented adapters have full usage documentation. Stub adapters are not yet im
 
 Jena Fuseki Adapter Usage
 -------------------------
-AxiusMEM provides first-class support for Apache Jena Fuseki as a triplestore backend.
+AxiusMEM™ provides first-class support for Apache Jena Fuseki as a triplestore backend.
 
 **Environment Variables:**
 

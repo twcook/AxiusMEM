@@ -1,8 +1,4 @@
-"""
-General utilities for AxiusMEM.
-
-Includes data validation against ontology and provenance attachment helpers.
-"""
+"""General utilities for AxiusMEM™."""
 
 def validate_data_against_ontology(graph, data):
     """

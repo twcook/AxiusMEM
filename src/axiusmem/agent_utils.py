@@ -1,8 +1,4 @@
-"""
-Utilities for AI agent context and memory management in AxiusMEM.
-
-These helpers support context retrieval, agent memory storage, retrieval, formatting for LLM prompt consumption, and dynamic ontology updates.
-"""
+"""Utilities for AI agent context and memory management in AxiusMEM™."""
 import logging
 from typing import Any, List, Dict, Optional
 from rdflib import Graph, URIRef, Literal, Namespace

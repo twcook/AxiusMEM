@@ -1,4 +1,4 @@
-# AxiusMEM
+# AxiusMEM™
 
 A W3C-compliant temporal knowledge graph library for AI agents.
 
@@ -50,7 +50,7 @@ See [LICENSE](LICENSE).
 
 ## Triplestore Configuration
 
-AxiusMEM now supports generic configuration for multiple triplestores. Set the following environment variables:
+AxiusMEM™ now supports generic configuration for multiple triplestores. Set the following environment variables:
 
 - `TRIPLESTORE_TYPE`: The type of triplestore to use (`graphdb`, `jena`, etc.)
 - `TRIPLESTORE_URL`: The base URL or host for the triplestore
@@ -89,11 +89,11 @@ This will automatically select and configure the appropriate adapter based on yo
 
 # Jena Fuseki Adapter Usage
 
-AxiusMEM now provides first-class support for Apache Jena Fuseki as a triplestore backend. Below are detailed setup and usage instructions.
+AxiusMEM™ now provides first-class support for Apache Jena Fuseki as a triplestore backend. Below are detailed setup and usage instructions.
 
 ## Environment Variable Setup
 
-Set the following environment variables to configure AxiusMEM to use Jena Fuseki:
+Set the following environment variables to configure AxiusMEM™ to use Jena Fuseki:
 
 - `TRIPLESTORE_TYPE=jena`
 - `TRIPLESTORE_URL=http://localhost:3030`  # Change host/port as needed
@@ -149,11 +149,11 @@ else:
 - Use the Fuseki UI to create datasets, upload data, and test queries.
 
 ## Extending to Other Triplestores
-While this documentation focuses on Jena Fuseki, AxiusMEM is designed to support other triplestores via the adapter factory. To use another backend, set `TRIPLESTORE_TYPE` and the relevant environment variables, and ensure the adapter is implemented.
+While this documentation focuses on Jena Fuseki, AxiusMEM™ is designed to support other triplestores via the adapter factory. To use another backend, set `TRIPLESTORE_TYPE` and the relevant environment variables, and ensure the adapter is implemented.
 
 ## User and Role Management REST API
 
-AxiusMEM now provides a REST API for user and role management, supporting admin and agent roles.
+AxiusMEM™ now provides a REST API for user and role management, supporting admin and agent roles.
 
 > **Note:** On first run, you may need to create an initial admin user. This can be done via a special CLI command or by using the `/users/` endpoint if no users exist. See the documentation for details.
 
@@ -194,7 +194,7 @@ See the OpenAPI docs for all endpoints and details.
 
 ## Server Logs and Statistics
 
-AxiusMEM now tracks server statistics and logs all API requests and responses. Admins can access live server stats via a dedicated endpoint.
+AxiusMEM™ now tracks server statistics and logs all API requests and responses. Admins can access live server stats via a dedicated endpoint.
 
 ### Features
 - Logs every API request and response (method, path, status)
@@ -227,7 +227,7 @@ See logs in your console or log file for detailed request/response info.
 
 ## Transactions API
 
-AxiusMEM now provides admin-only endpoints for triplestore transactions (begin, commit, rollback) if supported by the backend adapter.
+AxiusMEM™ now provides admin-only endpoints for triplestore transactions (begin, commit, rollback) if supported by the backend adapter.
 
 ### Endpoints
 - `POST /transactions/begin` → returns a transaction ID (tx_id)
@@ -258,7 +258,7 @@ See the OpenAPI docs for details and adapter support.
 
 ## Named Graph Management API
 
-AxiusMEM now provides admin-only endpoints for managing named graphs (if supported by the backend adapter).
+AxiusMEM™ now provides admin-only endpoints for managing named graphs (if supported by the backend adapter).
 
 ### Endpoints
 - `GET /graphs/` — list all named graphs
@@ -301,7 +301,7 @@ See the OpenAPI docs for details and adapter support.
 
 ## Public SPARQL Endpoint
 
-AxiusMEM provides a public `GET /sparql` endpoint for running SPARQL SELECT and ASK queries via HTTP GET.
+AxiusMEM™ provides a public `GET /sparql` endpoint for running SPARQL SELECT and ASK queries via HTTP GET.
 
 ### Endpoint
 - `GET /sparql?query=...` — run a SPARQL SELECT or ASK query (no authentication required)
@@ -327,7 +327,7 @@ See the OpenAPI docs for details and adapter support.
 
 ## Automatic Retry Policy
 
-AxiusMEM automatically retries triplestore and network operations to improve reliability in the face of transient errors.
+AxiusMEM™ automatically retries triplestore and network operations to improve reliability in the face of transient errors.
 
 - **What is retried:**
   - All network/triplestore operations (SPARQL queries, updates, transactions, named graph ops) in supported adapters (GraphDB, Jena, etc.)
@@ -346,7 +346,7 @@ See the OpenAPI docs and logs for details.
 
 ## Error Handling and Retry Responses
 
-AxiusMEM provides clear, user-facing error messages for all API endpoints. If an operation is retried and still fails, the API returns a 503 with a message indicating the retry attempts. For other errors, a 500 is returned with context.
+AxiusMEM™ provides clear, user-facing error messages for all API endpoints. If an operation is retried and still fails, the API returns a 503 with a message indicating the retry attempts. For other errors, a 500 is returned with context.
 
 ### Example Error Responses
 
@@ -369,7 +369,7 @@ See the OpenAPI docs for details and troubleshooting.
 
 ## Health Check, Metrics, and Tasks Endpoints
 
-AxiusMEM provides endpoints for health checks, server metrics, and background tasks.
+AxiusMEM™ provides endpoints for health checks, server metrics, and background tasks.
 
 ### Endpoints
 - `GET /health` (public): Returns API status and triplestore connectivity

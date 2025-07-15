@@ -4,7 +4,7 @@ import bcrypt
 import uuid
 from typing import List, Optional
 
-AXM = Namespace("https://axius.info/axiusmem/")
+AXM = Namespace("https://axius.info/axiusmem/")  # AxiusMEM™ namespace
 
 class UserManager:
     def __init__(self, graph: rdflib.Graph):

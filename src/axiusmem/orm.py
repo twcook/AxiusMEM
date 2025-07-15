@@ -1,8 +1,4 @@
-"""
-ORM-like utilities for mapping Python objects to RDF and vice versa in AxiusMEM.
-
-These helpers enable conversion between Python objects and RDF triples for easier integration with the knowledge graph.
-"""
+"""ORM-like utilities for mapping Python objects to RDF and vice versa in AxiusMEM™."""
 from typing import Any, Dict, List, Optional, Type
 from rdflib import Graph, URIRef, BNode, Literal, Namespace, RDF, RDFS
 import dataclasses

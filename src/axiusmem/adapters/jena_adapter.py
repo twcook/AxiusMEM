@@ -12,6 +12,7 @@ retry_on_network = tenacity.retry(
     before_sleep=tenacity.before_sleep_log(__import__('logging').getLogger("axiusmem.jena_adapter"), __import__('logging').WARNING)
 )
 
+# AxiusMEM™ Jena Adapter
 class JenaAdapter(BaseTriplestoreAdapter):
     """
     Adapter for Apache Jena (TDB/Fuseki).

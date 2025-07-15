@@ -1,5 +1,5 @@
 """
-AxiusMEM: A W3C-compliant temporal knowledge graph library for AI agents.
+AxiusMEM™: A W3C-compliant temporal knowledge graph library for AI agents.
 Supports RDF, SPARQL, OWL, bi-temporal data, and GraphDB integration.
 """
 from .core import AxiusMEM

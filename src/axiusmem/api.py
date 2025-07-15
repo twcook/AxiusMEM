@@ -20,7 +20,7 @@ def create_app(graph=None):
     ALGORITHM = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
-    app = FastAPI(title="AxiusMEM User/Role Management API")
+    app = FastAPI(title="AxiusMEM™ User/Role Management API")
     if graph is None:
         graph = rdflib.Graph()
     user_manager = UserManager(graph)

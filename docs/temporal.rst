@@ -1,7 +1,7 @@
 Temporal and Provenance Features
 ==============================
 
-AxiusMEM supports bi-temporal RDF data, allowing you to attach and query both valid time and transaction time for triples. This enables point-in-time, as-of, and interval-based temporal reasoning.
+AxiusMEM™ supports bi-temporal RDF data, allowing you to attach and query both valid time and transaction time for triples. This enables point-in-time, as-of, and interval-based temporal reasoning.
 
 Overview
 --------

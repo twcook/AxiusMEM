@@ -14,6 +14,7 @@ retry_on_network = tenacity.retry(
     before_sleep=tenacity.before_sleep_log(logging.getLogger("axiusmem.graphdb_adapter"), logging.WARNING)
 )
 
+# AxiusMEM™ GraphDB Adapter
 class GraphDBAdapter(BaseTriplestoreAdapter):
     """
     Adapter for interacting with Ontotext GraphDB via its REST API.

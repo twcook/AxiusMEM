@@ -1,6 +1,6 @@
 ---
 name: Bug Report
-description: Report a bug or unexpected behavior in AxiusMEM
+description: Report a bug or unexpected behavior in AxiusMEM™
 labels: bug
 ---
 
@@ -19,7 +19,7 @@ A clear and concise description of what you expected to happen.
 **Environment (please complete the following information):**
 - OS: [e.g. Ubuntu 22.04, Windows 11]
 - Python version: [e.g. 3.10]
-- AxiusMEM version: [e.g. 1.0.0]
+- AxiusMEM™ version: [e.g. 1.0.0]
 - Backend (GraphDB, etc.): [e.g. GraphDB 10.2]
 
 **Screenshots or Logs**

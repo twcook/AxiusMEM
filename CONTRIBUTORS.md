@@ -1,6 +1,6 @@
 # Contributors
 
-Thank you to everyone who has contributed to AxiusMEM!
+Thank you to everyone who has contributed to AxiusMEM™!
 
 - Project Lead: Timothy W. Cook
 - Core Developers: [List core devs here]
@@ -15,7 +15,7 @@ Thank you to everyone who has contributed to AxiusMEM!
 All contributions, big or small, are appreciated!
 
 ## Triplestore Adapter Contributions
-AxiusMEM is designed to be extensible for many RDF triplestores. We welcome contributions for any of the following adapters:
+AxiusMEM™ is designed to be extensible for many RDF triplestores. We welcome contributions for any of the following adapters:
 
 - OpenLink Virtuoso
 - AllegroGraph (Franz Inc.)
@@ -41,4 +41,4 @@ To contribute an adapter implementation:
 - Add tests in `tests/`.
 - Submit a pull request with your changes and documentation.
 
-Your work will help AxiusMEM support a wider community of users! 
+Your work will help AxiusMEM™ support a wider community of users! 
