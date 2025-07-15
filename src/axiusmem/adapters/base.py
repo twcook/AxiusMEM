@@ -1,69 +1,86 @@
-class BaseTriplestoreAdapter:
+import abc
+
+class BaseTriplestoreAdapter(abc.ABC):
     """
     Abstract base class for all triplestore adapters in AxiusMEM.
     Defines the required interface for RDF store integration, including transaction support.
     """
+    @abc.abstractmethod
     def connect(self):
         """Establish a connection to the triplestore."""
-        raise NotImplementedError("connect() must be implemented by subclass.")
+        pass
 
+    @abc.abstractmethod
     def close(self):
         """Close the connection to the triplestore."""
-        raise NotImplementedError("close() must be implemented by subclass.")
+        pass
 
+    @abc.abstractmethod
     def sparql_select(self, query: str, **kwargs):
         """Execute a SPARQL SELECT query."""
-        raise NotImplementedError("sparql_select() must be implemented by subclass.")
+        pass
 
+    @abc.abstractmethod
     def sparql_update(self, update_query: str, **kwargs):
         """Execute a SPARQL UPDATE query."""
-        raise NotImplementedError("sparql_update() must be implemented by subclass.")
+        pass
 
+    @abc.abstractmethod
     def bulk_load(self, rdf_path: str, rdf_format: str = "text/turtle"):
         """Bulk load RDF data into the triplestore."""
-        raise NotImplementedError("bulk_load() must be implemented by subclass.")
+        pass
 
+    @abc.abstractmethod
     def test_connection(self):
         """Test the connection to the triplestore."""
-        raise NotImplementedError("test_connection() must be implemented by subclass.")
+        pass
 
     # Transaction support
+    @abc.abstractmethod
     def begin_transaction(self):
         """Begin a new transaction. Returns a transaction ID or handle."""
-        raise NotImplementedError("begin_transaction() must be implemented by subclass if supported.")
+        pass
 
+    @abc.abstractmethod
     def commit_transaction(self, tx_id):
         """Commit the transaction with the given ID."""
-        raise NotImplementedError("commit_transaction() must be implemented by subclass if supported.")
+        pass
 
+    @abc.abstractmethod
     def rollback_transaction(self, tx_id):
         """Rollback the transaction with the given ID."""
-        raise NotImplementedError("rollback_transaction() must be implemented by subclass if supported.")
+        pass
 
     # Named graph management
+    @abc.abstractmethod
     def list_named_graphs(self):
         """List all named graphs in the triplestore."""
-        raise NotImplementedError("list_named_graphs() must be implemented by subclass if supported.")
+        pass
 
+    @abc.abstractmethod
     def create_named_graph(self, graph_uri):
         """Create a new named graph (may be a no-op for some stores)."""
-        raise NotImplementedError("create_named_graph() must be implemented by subclass if supported.")
+        pass
 
+    @abc.abstractmethod
     def delete_named_graph(self, graph_uri):
         """Delete a named graph and all its triples."""
-        raise NotImplementedError("delete_named_graph() must be implemented by subclass if supported.")
+        pass
 
+    @abc.abstractmethod
     def clear_named_graph(self, graph_uri):
         """Remove all triples from a named graph, but keep the graph itself."""
-        raise NotImplementedError("clear_named_graph() must be implemented by subclass if supported.")
+        pass
 
+    @abc.abstractmethod
     def add_triples_to_named_graph(self, graph_uri, triples):
         """Add triples to a named graph."""
-        raise NotImplementedError("add_triples_to_named_graph() must be implemented by subclass if supported.")
+        pass
 
+    @abc.abstractmethod
     def get_triples_from_named_graph(self, graph_uri, query):
         """Run a SPARQL query against a named graph and return results."""
-        raise NotImplementedError("get_triples_from_named_graph() must be implemented by subclass if supported.")
+        pass
 
 
 def get_triplestore_adapter_from_env():
@@ -84,7 +101,7 @@ def get_triplestore_adapter_from_env():
         ValueError: If TRIPLESTORE_TYPE is unknown or required variables are missing.
     """
     import os
-    ttype = os.getenv("TRIPLESTORE_TYPE", "graphdb").lower()
+    ttype = os.getenv("TRIPLESTORE_TYPE").lower()
     url = os.getenv("TRIPLESTORE_URL")
     user = os.getenv("TRIPLESTORE_USER")
     password = os.getenv("TRIPLESTORE_PASSWORD")

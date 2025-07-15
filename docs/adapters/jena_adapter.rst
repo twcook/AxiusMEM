@@ -13,6 +13,15 @@ Supported Features:
 - Dataset (repository) management (list, create, delete, config, backup, restore)
 - Server status
 
+All adapters inherit from the `BaseTriplestoreAdapter` and are instantiated via the factory function:
+
+.. code-block:: python
+
+   from axiusmem.adapters.base import get_triplestore_adapter_from_env
+   adapter = get_triplestore_adapter_from_env()
+
+The dataset is set via the `TRIPLESTORE_REPOSITORY` environment variable or at adapter initialization.
+
 Environment Variables:
 - TRIPLESTORE_TYPE=jena
 - TRIPLESTORE_URL (e.g., http://localhost:3030)
@@ -23,9 +32,6 @@ Environment Variables:
 Example Usage:
 
 .. code-block:: python
-
-   from axiusmem.adapters.base import get_triplestore_adapter_from_env
-   adapter = get_triplestore_adapter_from_env()
 
    # Get dataset config
    config = adapter.get_dataset_config("Default")

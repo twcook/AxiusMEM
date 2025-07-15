@@ -64,30 +64,28 @@ def test_graphdb_version():
 def test_sparql_select_and_ask():
     """Test SPARQL SELECT and ASK queries."""
     url = get_env("TRIPLESTORE_URL")
-    repo_id = get_env("TRIPLESTORE_REPOSITORY")
     adapter = get_triplestore_adapter_from_env()
     # Simple ASK query
-    ask = adapter.sparql_ask(repo_id, "ASK { ?s ?p ?o }")
+    ask = adapter.sparql_ask("ASK { ?s ?p ?o }")
     assert ask in (True, False)
     # Simple SELECT query
-    select = adapter.sparql_select(repo_id, "SELECT * WHERE { ?s ?p ?o } LIMIT 1")
+    select = adapter.sparql_select("SELECT * WHERE { ?s ?p ?o } LIMIT 1")
     assert isinstance(select, list)
 
 @graphdb_only
 def test_sparql_construct_and_update():
     """Test SPARQL CONSTRUCT and UPDATE queries."""
     url = get_env("TRIPLESTORE_URL")
-    repo_id = get_env("TRIPLESTORE_REPOSITORY")
     adapter = get_triplestore_adapter_from_env()
     # CONSTRUCT query
-    construct = adapter.sparql_construct(repo_id, "CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o } LIMIT 1")
+    construct = adapter.sparql_construct("CONSTRUCT { ?s ?p ?o } WHERE { ?s ?p ?o } LIMIT 1")
     assert construct is None or isinstance(construct, str)
     # UPDATE query (insert and delete a dummy triple)
     test_triple = "<urn:test:s> <urn:test:p> \"test\" ."
     insert_query = f"INSERT DATA {{ {test_triple} }}"
     delete_query = f"DELETE DATA {{ {test_triple} }}"
-    inserted = adapter.sparql_update(repo_id, insert_query)
-    deleted = adapter.sparql_update(repo_id, delete_query)
+    inserted = adapter.sparql_update(insert_query)
+    deleted = adapter.sparql_update(delete_query)
     assert inserted in (True, False)
     assert deleted in (True, False)
 
@@ -95,21 +93,19 @@ def test_sparql_construct_and_update():
 def test_bulk_load():
     """Test bulk loading RDF data (skipped if no test file)."""
     url = get_env("TRIPLESTORE_URL")
-    repo_id = get_env("TRIPLESTORE_REPOSITORY")
     adapter = get_triplestore_adapter_from_env()
     test_file = "docs/axiusmem_ontology.ttl"
     if not os.path.exists(test_file):
         pytest.skip("No test RDF file for bulk load.")
-    loaded = adapter.bulk_load(repo_id, test_file)
+    loaded = adapter.bulk_load(test_file)
     assert loaded in (True, False)
 
 @graphdb_only
 def test_transaction_support():
     """Test transaction begin/commit/rollback (if supported)."""
     url = get_env("TRIPLESTORE_URL")
-    repo_id = get_env("TRIPLESTORE_REPOSITORY")
     adapter = get_triplestore_adapter_from_env()
-    tx_id = adapter.begin_transaction(repo_id)
+    tx_id = adapter.begin_transaction()
     if tx_id:
         # Try commit and rollback (should not error)
         committed = adapter.commit_transaction(tx_id)
