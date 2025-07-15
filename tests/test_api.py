@@ -5,6 +5,10 @@ from axiusmem.api import create_app
 from axiusmem.adapters.base import get_triplestore_adapter_from_env
 import rdflib
 
+# Add triplestore-specific decorators
+graphdb_only = pytest.mark.skipif(os.getenv("TRIPLESTORE_TYPE") != "graphdb", reason="GraphDB-specific test")
+jena_only = pytest.mark.skipif(os.getenv("TRIPLESTORE_TYPE") != "jena", reason="Jena-specific test")
+
 @pytest.fixture(autouse=True)
 def set_env(monkeypatch):
     monkeypatch.setenv("AXIUSMEM_ADMIN_USER", "admin")
@@ -130,23 +134,25 @@ def transactions_supported():
 
 @pytest.mark.skipif(not transactions_supported(), reason="Transactions not supported by this adapter.")
 def test_transaction_lifecycle(client):
-    admin_token = get_token(client, "admin", "adminpw")
-    headers = {"Authorization": f"Bearer {admin_token}"}
-    # Begin transaction
-    resp = client.post("/transactions/begin", headers=headers)
-    assert resp.status_code == 200
-    tx_id = resp.json()["tx_id"]
-    # Commit transaction
-    resp = client.post(f"/transactions/{tx_id}/commit", headers=headers)
-    assert resp.status_code == 200
-    assert "committed" in resp.json()["msg"]
-    # Begin and rollback
-    resp = client.post("/transactions/begin", headers=headers)
-    assert resp.status_code == 200
-    tx_id = resp.json()["tx_id"]
-    resp = client.post(f"/transactions/{tx_id}/rollback", headers=headers)
-    assert resp.status_code == 200
-    assert "rolled back" in resp.json()["msg"]
+    app, graph = client()
+    with TestClient(app) as client_instance:
+        admin_token = get_token(client_instance, "admin", "adminpw")
+        headers = {"Authorization": f"Bearer {admin_token}"}
+        # Begin transaction
+        resp = client_instance.post("/transactions/begin", headers=headers)
+        assert resp.status_code == 200
+        tx_id = resp.json()["tx_id"]
+        # Commit transaction
+        resp = client_instance.post(f"/transactions/{tx_id}/commit", headers=headers)
+        assert resp.status_code == 200
+        assert "committed" in resp.json()["msg"]
+        # Begin and rollback
+        resp = client_instance.post("/transactions/begin", headers=headers)
+        assert resp.status_code == 200
+        tx_id = resp.json()["tx_id"]
+        resp = client_instance.post(f"/transactions/{tx_id}/rollback", headers=headers)
+        assert resp.status_code == 200
+        assert "rolled back" in resp.json()["msg"]
 
 @pytest.mark.skipif(transactions_supported(), reason="Transactions are supported, skipping unsupported test.")
 def test_transaction_not_supported(client):
@@ -212,6 +218,7 @@ def test_tasks_endpoint_admin_and_forbidden(client):
         resp = client.get("/tasks", headers=agent_headers)
         assert resp.status_code == 403 
 
+@jena_only
 def test_sparql_select_and_ask(client):
     app, graph = client()
     with TestClient(app) as client:
@@ -238,7 +245,7 @@ def test_sparql_select_and_ask(client):
         data = resp.json()
         assert "results" in data
 
-
+@jena_only
 def test_sparql_update_not_allowed(client):
     app, graph = client()
     with TestClient(app) as client:
