@@ -17,14 +17,9 @@ A W3C-compliant temporal knowledge graph library for AI agents.
 
 ## Installation
 
-### Using pip
+Install via pip:
 ```bash
 pip install axiusmem
-```
-
-### Using conda
-```bash
-conda install -c conda-forge axiusmem
 ```
 
 ## Quick Start
@@ -41,6 +36,8 @@ mem.connect_graphdb()
 - [Sphinx Docs (HTML)](https://axiusmem.readthedocs.io/en/latest/)
 - [Ontology (Turtle)](src/axiusmem/axiusmem_ontology.ttl)
 
+> **Note:** For previous versions, see the version selector on the documentation site if available.
+
 ## Contributing
 See [CONTRIBUTORS.md](CONTRIBUTORS.md) and the [Code of Conduct](CODE_OF_CONDUCT.md).
 
@@ -48,8 +45,8 @@ See [CONTRIBUTORS.md](CONTRIBUTORS.md) and the [Code of Conduct](CODE_OF_CONDUCT
 See [LICENSE](LICENSE).
 
 ## Community & Support
-- Feedback, issues, and feature requests: [GitHub Issues](https://github.com/your-org/axiusmem/issues)
-- Roadmap and discussions: [GitHub Discussions](https://github.com/your-org/axiusmem/discussions) 
+- Feedback, issues, and feature requests: [GitHub Issues](https://github.com/<your-org>/axiusmem/issues)
+- Roadmap and discussions: [GitHub Discussions](https://github.com/<your-org>/axiusmem/discussions)
 
 ## Triplestore Configuration
 
@@ -88,7 +85,7 @@ from axiusmem.adapters.base import get_triplestore_adapter_from_env
 adapter = get_triplestore_adapter_from_env()
 ```
 
-This will automatically select and configure the appropriate adapter based on your environment variables. 
+This will automatically select and configure the appropriate adapter based on your environment variables.
 
 # Jena Fuseki Adapter Usage
 
@@ -152,11 +149,13 @@ else:
 - Use the Fuseki UI to create datasets, upload data, and test queries.
 
 ## Extending to Other Triplestores
-While this documentation focuses on Jena Fuseki, AxiusMEM is designed to support other triplestores via the adapter factory. To use another backend, set `TRIPLESTORE_TYPE` and the relevant environment variables, and ensure the adapter is implemented. 
+While this documentation focuses on Jena Fuseki, AxiusMEM is designed to support other triplestores via the adapter factory. To use another backend, set `TRIPLESTORE_TYPE` and the relevant environment variables, and ensure the adapter is implemented.
 
 ## User and Role Management REST API
 
 AxiusMEM now provides a REST API for user and role management, supporting admin and agent roles.
+
+> **Note:** On first run, you may need to create an initial admin user. This can be done via a special CLI command or by using the `/users/` endpoint if no users exist. See the documentation for details.
 
 ### Features
 - Admin endpoints: create/delete users, assign roles, list users
@@ -191,7 +190,7 @@ AxiusMEM now provides a REST API for user and role management, supporting admin 
   curl -H "Authorization: Bearer <JWT>" http://localhost:8000/me
   ```
 
-See the OpenAPI docs for all endpoints and details. 
+See the OpenAPI docs for all endpoints and details.
 
 ## Server Logs and Statistics
 
@@ -224,7 +223,7 @@ AxiusMEM now tracks server statistics and logs all API requests and responses. A
    # }
    ```
 
-See logs in your console or log file for detailed request/response info. 
+See logs in your console or log file for detailed request/response info.
 
 ## Transactions API
 
@@ -255,7 +254,7 @@ AxiusMEM now provides admin-only endpoints for triplestore transactions (begin, 
    # Response: { "msg": "Transaction <tx_id> rolled back." }
    ```
 
-See the OpenAPI docs for details and adapter support. 
+See the OpenAPI docs for details and adapter support.
 
 ## Named Graph Management API
 
@@ -298,7 +297,7 @@ AxiusMEM now provides admin-only endpoints for managing named graphs (if support
    # Response: { "results": [...] }
    ```
 
-See the OpenAPI docs for details and adapter support. 
+See the OpenAPI docs for details and adapter support.
 
 ## Public SPARQL Endpoint
 
@@ -306,6 +305,8 @@ AxiusMEM provides a public `GET /sparql` endpoint for running SPARQL SELECT and 
 
 ### Endpoint
 - `GET /sparql?query=...` — run a SPARQL SELECT or ASK query (no authentication required)
+
+> **Security Note:** The public SPARQL endpoint is read-only (SELECT, ASK). For production deployments, consider rate limiting, authentication, or restricting access as appropriate.
 
 ### Example Usage
 
@@ -322,7 +323,7 @@ AxiusMEM provides a public `GET /sparql` endpoint for running SPARQL SELECT and 
 
 **Note:** Only read-only queries (SELECT, ASK) are supported. For updates, use the admin API.
 
-See the OpenAPI docs for details and adapter support. 
+See the OpenAPI docs for details and adapter support.
 
 ## Automatic Retry Policy
 
@@ -341,7 +342,7 @@ AxiusMEM automatically retries triplestore and network operations to improve rel
 
 **Note:** For persistent errors (e.g., authentication failure, invalid query), no retry is performed.
 
-See the OpenAPI docs and logs for details. 
+See the OpenAPI docs and logs for details.
 
 ## Error Handling and Retry Responses
 
@@ -364,7 +365,7 @@ AxiusMEM provides clear, user-facing error messages for all API endpoints. If an
 
 **Note:** For persistent errors (e.g., invalid query, authentication failure), a 400 or 401/403 is returned as appropriate.
 
-See the OpenAPI docs for details and troubleshooting. 
+See the OpenAPI docs for details and troubleshooting.
 
 ## Health Check, Metrics, and Tasks Endpoints
 
