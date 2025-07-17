@@ -83,16 +83,19 @@ class BaseTriplestoreAdapter(abc.ABC):
         pass
 
 
-def get_triplestore_adapter_from_env():
+def get_triplestore_adapter_from_env(repository=None):
     """
-    Factory to instantiate the correct triplestore adapter based on environment variables.
+    Factory to instantiate the correct triplestore adapter based on environment variables or explicit repository/dataset.
+
+    Args:
+        repository (str, optional): Repository or dataset name. If not provided, falls back to TRIPLESTORE_REPOSITORY env var.
 
     Reads:
         TRIPLESTORE_TYPE: 'graphdb', 'jena', etc.
         TRIPLESTORE_URL: base URL or host
         TRIPLESTORE_USER: username (optional)
         TRIPLESTORE_PASSWORD: password (optional)
-        TRIPLESTORE_REPOSITORY: repository or dataset name (optional)
+        TRIPLESTORE_REPOSITORY: repository or dataset name (optional, used as fallback)
 
     Returns:
         An instance of the appropriate triplestore adapter.
@@ -110,8 +113,7 @@ def get_triplestore_adapter_from_env():
     url = os.getenv("TRIPLESTORE_URL")
     user = os.getenv("TRIPLESTORE_USER")
     password = os.getenv("TRIPLESTORE_PASSWORD")
-    repo = os.getenv("TRIPLESTORE_REPOSITORY")
-    print(ttype)
+    repo = repository or os.getenv("TRIPLESTORE_REPOSITORY")
     # Import adapters here to avoid circular imports
     from axiusmem.graphdb_adapter import GraphDBAdapter
     from axiusmem.adapters.jena_adapter import JenaAdapter
@@ -119,10 +121,10 @@ def get_triplestore_adapter_from_env():
     if ttype == "graphdb":
         if not url:
             raise ValueError("TRIPLESTORE_URL must be set for GraphDB.")
-        return GraphDBAdapter(url, user, password)
+        return GraphDBAdapter(url, user, password, repository=repo)
     elif ttype == "jena":
         if not url or not repo:
-            raise ValueError("TRIPLESTORE_URL and TRIPLESTORE_REPOSITORY must be set for Jena.")
+            raise ValueError("TRIPLESTORE_URL and repository/dataset must be set for Jena.")
         # Parse host/port from url if needed
         import re
         m = re.match(r"https?://([^:/]+)(?::(\d+))?", url)

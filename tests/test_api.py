@@ -273,7 +273,7 @@ def test_error_response_retry(monkeypatch, client):
         class MockAdapter:
             def sparql_select(self, query):
                 raise RetryError(DummyAttempt())
-        monkeypatch.setattr("axiusmem.api.get_triplestore_adapter_from_env", lambda: MockAdapter())
+        monkeypatch.setattr("axiusmem.api.get_triplestore_adapter_from_env", lambda *args, **kwargs: MockAdapter())
         resp = client.get("/sparql", params={"query": "SELECT * WHERE { ?s ?p ?o }"})
         if resp.status_code != 503:
             print("Response status:", resp.status_code)
@@ -288,7 +288,7 @@ def test_error_response_500(monkeypatch, client):
         class MockAdapter:
             def sparql_select(self, query):
                 raise RuntimeError("Simulated failure")
-        monkeypatch.setattr("axiusmem.api.get_triplestore_adapter_from_env", lambda: MockAdapter())
+        monkeypatch.setattr("axiusmem.api.get_triplestore_adapter_from_env", lambda *args, **kwargs: MockAdapter())
         resp = client.get("/sparql", params={"query": "SELECT * WHERE { ?s ?p ?o }"})
         assert resp.status_code == 500
         assert "Simulated failure" in resp.json()["detail"]

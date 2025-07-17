@@ -19,8 +19,16 @@ class GraphDBAdapter(BaseTriplestoreAdapter):
     """
     Adapter for interacting with Ontotext GraphDB via its REST API.
     Inherits from BaseTriplestoreAdapter.
+
+    Args:
+        url (str): Base URL for GraphDB.
+        user (str, optional): Username for authentication.
+        password (str, optional): Password for authentication.
+        repository (str, optional): Repository name. If not provided, falls back to TRIPLESTORE_REPOSITORY env var.
+        use_https (bool, optional): Use HTTPS for requests (default True).
     """
     def __init__(self, url, user=None, password=None, repository=None, use_https=True):
+        import os
         self.url = url.rstrip('/')
         self.user = user
         self.password = password
