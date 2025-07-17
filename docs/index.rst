@@ -95,4 +95,7 @@ JenaAdapter API
 Adapter Factory
 ---------------
 
-(See the API Reference section for full details on the adapter factory.) 
+(See the API Reference section for full details on the adapter factory.)
+
+.. note::
+   The AxiusMEM™ ontology is distributed with the library and can be loaded into your triplestore with a single function call. See the Quickstart for details. 

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="axiusmem",
-    version="1.2.0",
+    version="1.3.0",
     description="A W3C-compliant temporal knowledge graph library for AI agents.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",

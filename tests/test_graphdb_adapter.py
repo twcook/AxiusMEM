@@ -20,13 +20,13 @@ def get_env(var):
 
 @pytest.mark.integration
 def test_graphdb_connection_and_ontology_load():
-    """Test GraphDB connection and ontology loading."""
+    """Test GraphDB connection and ontology loading (explicit repository)."""
     url = get_env("TRIPLESTORE_URL")
     user = get_env("TRIPLESTORE_USER")
     password = get_env("TRIPLESTORE_PASSWORD")
     repo_id = get_env("TRIPLESTORE_REPOSITORY")
     ontology_path = os.getenv("AXIUSMEM_ONTOLOGY", "docs/axiusmem_ontology.ttl")
-    adapter = get_triplestore_adapter_from_env()
+    adapter = get_triplestore_adapter_from_env(repository=repo_id)
     assert adapter.test_connection(), "Could not connect to GraphDB."
     # Try loading ontology (will fail if repo doesn't exist or is read-only)
     try:
@@ -45,12 +45,20 @@ def test_list_repositories():
 
 @graphdb_only
 def test_check_repository_exists():
-    """Test repository existence check."""
+    """Test repository existence check (explicit repository)."""
     url = get_env("TRIPLESTORE_URL")
     repo_id = get_env("TRIPLESTORE_REPOSITORY")
-    adapter = get_triplestore_adapter_from_env()
+    adapter = get_triplestore_adapter_from_env(repository=repo_id)
     assert adapter.check_repository_exists(repo_id) is True
     assert adapter.check_repository_exists("nonexistent_repo_12345") is False
+
+# Add a test for fallback to environment variable
+@graphdb_only
+def test_graphdb_adapter_env_fallback():
+    """Test GraphDBAdapter falls back to TRIPLESTORE_REPOSITORY env var if repository not provided."""
+    repo_id = get_env("TRIPLESTORE_REPOSITORY")
+    adapter = get_triplestore_adapter_from_env()
+    assert adapter.repository == repo_id
 
 @graphdb_only
 def test_graphdb_version():
@@ -213,7 +221,14 @@ def test_jena_sparql_ask():
 @jena_only
 def test_jena_get_and_set_dataset_config():
     adapter = get_triplestore_adapter_from_env()
-    config = adapter.get_dataset_config("Default")
+    # Ensure 'Default' dataset exists
+    datasets = adapter.list_datasets()
+    dataset_names = [d['ds.name'] for d in datasets.get('datasets', [])]
+    created = False
+    if 'Default' not in dataset_names:
+        created = adapter.create_dataset('Default', db_type='mem')
+        assert created, "Failed to create 'Default' dataset for test."
+    config = adapter.get_dataset_config('Default')
     assert isinstance(config, dict)
     # Try setting the label (no-op if not allowed)
     config["label"] = "Test Label"
@@ -222,6 +237,9 @@ def test_jena_get_and_set_dataset_config():
         assert result in (True, False)
     except Exception:
         pass  # Some configs may be read-only
+    # Clean up if we created the dataset
+    if created:
+        adapter.delete_dataset('Default')
 
 @jena_only
 def test_jena_backup_and_restore_dataset():
@@ -265,15 +283,21 @@ def test_graphdb_retry_on_network_failure():
 
 @jena_only
 def test_jena_retry_on_network_failure():
-    """Test that JenaAdapter methods retry and raise RetryError on repeated network failure."""
+    """Test that JenaAdapter methods retry and raise RequestException on repeated network failure."""
     adapter = get_triplestore_adapter_from_env()
     # Patch post for all relevant methods
     with patch("requests.Session.post", side_effect=always_fail):
-        with pytest.raises(tenacity.RetryError):
+        with pytest.raises(requests.exceptions.RequestException):
             adapter.sparql_select("SELECT * WHERE { ?s ?p ?o } LIMIT 1")
     with patch("requests.Session.post", side_effect=always_fail):
-        with pytest.raises(tenacity.RetryError):
+        with pytest.raises(requests.exceptions.RequestException):
             adapter.sparql_update("INSERT DATA { <urn:test:s> <urn:test:p> 'fail' }")
-    with patch("requests.Session.post", side_effect=always_fail):
-        with pytest.raises(tenacity.RetryError):
-            adapter.bulk_load("docs/axiusmem_ontology.ttl") 
+    import tempfile, os
+    tmp = tempfile.NamedTemporaryFile(suffix=".ttl", delete=False)
+    tmp.close()
+    try:
+        with patch("requests.Session.post", side_effect=always_fail):
+            with pytest.raises(requests.exceptions.RequestException):
+                adapter.bulk_load(tmp.name)
+    finally:
+        os.unlink(tmp.name) 

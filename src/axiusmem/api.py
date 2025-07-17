@@ -188,10 +188,10 @@ def create_app(graph=None):
 
     # Health check endpoint (public)
     @app.get("/health")
-    def health_check():
-        """Public health check endpoint. Returns status and triplestore connectivity."""
+    def health_check(repository: Optional[str] = None):
+        """Public health check endpoint. Returns status and triplestore connectivity. Optionally accepts repository/dataset."""
         try:
-            adapter = get_triplestore_adapter_from_env()
+            adapter = get_triplestore_adapter_from_env(repository=repository)
             triplestore_ok = False
             try:
                 triplestore_ok = adapter.test_connection()
@@ -234,9 +234,10 @@ def create_app(graph=None):
 
     # Patch all endpoints that interact with the adapter to use handle_adapter_error
     @app.get("/sparql")
-    def sparql_get(query: str):
+    def sparql_get(query: str, repository: Optional[str] = None):
+        """Run a SPARQL SELECT query. Optionally accepts repository/dataset."""
         try:
-            adapter = get_triplestore_adapter_from_env()
+            adapter = get_triplestore_adapter_from_env(repository=repository)
             if query.strip().lower().startswith("ask"):
                 result = adapter.sparql_select(query)
             else:

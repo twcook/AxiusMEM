@@ -17,11 +17,20 @@ class JenaAdapter(BaseTriplestoreAdapter):
     """
     Adapter for Apache Jena (TDB/Fuseki).
     Connects to a Fuseki server via HTTP.
+
+    Args:
+        host (str): Hostname for Jena Fuseki.
+        port (int): Port for Jena Fuseki.
+        dataset (str, optional): Dataset name. If not provided, falls back to TRIPLESTORE_REPOSITORY env var.
+        username (str, optional): Username for authentication.
+        password (str, optional): Password for authentication.
+        protocol (str, optional): 'http' or 'https'.
     """
-    def __init__(self, host='localhost', port=3030, dataset='Default', username=None, password=None, protocol='http'):
+    def __init__(self, host='localhost', port=3030, dataset=None, username=None, password=None, protocol='http'):
+        import os
         self.host = host
         self.port = port
-        self.dataset = dataset
+        self.dataset = dataset or os.getenv("TRIPLESTORE_REPOSITORY")
         self.username = username
         self.password = password
         self.protocol = protocol

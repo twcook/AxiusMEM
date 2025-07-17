@@ -15,18 +15,19 @@ class AxiusMEM:
     provenance, ingestion, querying, and temporal reasoning. It is the main entry point for interacting with
     the AxiusMEM™ knowledge graph in Python.
 
-    Example:
-        >>> mem = AxiusMEM()
-        >>> mem.add_triples([(s, p, o)], valid_time={"from": "2024-01-01"})
-        >>> results, df = mem.select('SELECT ?s ?o WHERE { ?s <http://example.org/knows> ?o . }')
+    Args:
+        ontology_path (Optional[str]): Path to the ontology file (Turtle or RDF/XML).
+        env_path (Optional[str]): Path to .env file for environment variables.
+        triplestore_repository (Optional[str]): Repository/dataset name. If not provided, falls back to env var.
     """
-    def __init__(self, ontology_path: Optional[str] = None, env_path: Optional[str] = None):
+    def __init__(self, ontology_path: Optional[str] = None, env_path: Optional[str] = None, triplestore_repository: Optional[str] = None):
         """
         Initialize AxiusMEM and load the ontology.
 
         Args:
             ontology_path (Optional[str]): Path to the ontology file (Turtle or RDF/XML).
             env_path (Optional[str]): Path to .env file for environment variables.
+            triplestore_repository (Optional[str]): Repository/dataset name. If not provided, falls back to env var.
         """
         load_dotenv(env_path or ".env")
         self.ontology_path = ontology_path or "axiusmem_ontology.ttl"
@@ -37,7 +38,7 @@ class AxiusMEM:
         self.triplestore_url = os.getenv("TRIPLESTORE_URL")
         self.triplestore_user = os.getenv("TRIPLESTORE_USER")
         self.triplestore_password = os.getenv("TRIPLESTORE_PASSWORD")
-        self.triplestore_repository = os.getenv("TRIPLESTORE_REPOSITORY")
+        self.triplestore_repository = triplestore_repository or os.getenv("TRIPLESTORE_REPOSITORY")
 
     def load_ontology(self, ontology_path: str, format: Optional[str] = None) -> None:
         """
