@@ -3,7 +3,7 @@
 A W3C-compliant temporal knowledge graph library for AI agents.
 
 [![PyPI version](https://badge.fury.io/py/axiusmem.svg)](https://badge.fury.io/py/axiusmem)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 [![Docs](https://readthedocs.org/projects/axiusmem/badge/?version=latest)](https://axiusmem.readthedocs.io/en/latest/)
 
 ## Features
