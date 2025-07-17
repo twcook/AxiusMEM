@@ -19,3 +19,12 @@ All notable changes to this project will be documented in this file.
 ### Added
 - New notebooks for quickstart for Jena and GraphDB
 - Fixed module bug in adapters
+
+## [1.2.1] - 2025-07-16
+
+### Updated Notebooks
+- Quickstart notebook now uses the new `get_default_ontology_path` function
+- Quickstart notebook now uses the new `load_default_ontology` function
+- Quickstart notebook now works with the axiusmem ontology
+- Quickstart notebook now works with temporal model
+
