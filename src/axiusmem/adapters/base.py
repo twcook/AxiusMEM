@@ -101,12 +101,17 @@ def get_triplestore_adapter_from_env():
         ValueError: If TRIPLESTORE_TYPE is unknown or required variables are missing.
     """
     import os
+    try:
+        from dotenv import load_dotenv
+        load_dotenv()
+    except ImportError:
+        pass  # dotenv is optional, skip if not available
     ttype = os.getenv("TRIPLESTORE_TYPE")
     url = os.getenv("TRIPLESTORE_URL")
     user = os.getenv("TRIPLESTORE_USER")
     password = os.getenv("TRIPLESTORE_PASSWORD")
     repo = os.getenv("TRIPLESTORE_REPOSITORY")
-    ttype = ttype.lower()
+    print(ttype)
     # Import adapters here to avoid circular imports
     from axiusmem.graphdb_adapter import GraphDBAdapter
     from axiusmem.adapters.jena_adapter import JenaAdapter

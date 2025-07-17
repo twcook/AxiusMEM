@@ -63,6 +63,22 @@ Minimal Example:
     mem.connect_graphdb()
     # Add triples, query, manage agent memory, etc.
 
+Loading the Default Ontology
+---------------------------
+
+AxiusMEM™ distributes its ontology with the library. To load it into your triplestore:
+
+.. code-block:: python
+
+   from axiusmem import load_default_ontology
+   from axiusmem.adapters.base import get_triplestore_adapter_from_env
+
+   adapter = get_triplestore_adapter_from_env()
+   load_default_ontology(adapter)
+   print("Loaded the default AxiusMEM™ ontology into the triplestore.")
+
+No need to specify the ontology file path—AxiusMEM™ will find it automatically.
+
 Jena Fuseki Admin and Dataset Management
 ---------------------------------------
 

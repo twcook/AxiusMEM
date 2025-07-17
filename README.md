@@ -395,3 +395,19 @@ AxiusMEM™ provides endpoints for health checks, server metrics, and background
    ```
 
 See the OpenAPI docs for details and future task support. 
+
+## Loading the Default Ontology
+
+AxiusMEM™ distributes its core ontology with the library. You can load it into your triplestore with a single function call, regardless of where the package is installed:
+
+```python
+from axiusmem import load_default_ontology
+from axiusmem.adapters.base import get_triplestore_adapter_from_env
+
+# After loading environment variables
+adapter = get_triplestore_adapter_from_env()
+load_default_ontology(adapter)
+print("Loaded the default AxiusMEM™ ontology into the triplestore.")
+```
+
+No need to specify the ontology file path—AxiusMEM™ will find it automatically. 
