@@ -14,7 +14,7 @@ import importlib.resources
 import tempfile
 import shutil
 
-__version__ = "0.1.0a0"
+__version__ = "1.3.0"
 
 def get_default_ontology_path():
     """
